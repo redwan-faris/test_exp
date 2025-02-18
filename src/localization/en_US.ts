@@ -1,0 +1,21 @@
+export const en = {
+  unauthorized: "Unauthorized",
+  invalidKey: "Invalid key",
+  keyActivated: "License already activated",
+  licenseActivatedOnAnotherDevice:
+    "License already activated on another device",
+  licenseDeactivated: "License deactivated",
+  "500": "Internal Server Error",
+  keyExpired: "License expired at {date}",
+  licenseBlocked: "License is blocked, please contact the support center",
+  deviceHeaderRequired: "Device id header is required",
+  versionHeaderRequired: "Version header is required",
+  carNotFound: "Car not found",
+  successfulOperation: "Successful operation",
+  carAlreadyExists: "Car already exists",
+  phoneNumberAlreadyExists: "Phone number already exists",
+  failedToSendOtp: "Failed to send OTP",
+  successful: "Successful",
+  403: "Forbidden",
+  409: "Conflict",
+};
