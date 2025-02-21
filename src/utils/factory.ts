@@ -1,3 +1,3 @@
-import { createFactory } from "hono/factory";
+import { factory } from "../../../../../src/utils/factory";
 
-export const factory = createFactory();
+export default factory;
