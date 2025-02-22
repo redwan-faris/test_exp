@@ -1,4 +1,5 @@
 import { exCpRoutes } from "./endpoints";
+import { testPackage } from "./utils/test_package";
 import { generateLicenseToken } from "./utils/token";
 export default exCpRoutes;
 

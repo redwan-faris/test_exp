@@ -1,7 +1,7 @@
 
 
 
-const testPackage = (a,b) => {
+export const testPackage = (a,b) => {
 
     return {a,b}
 
