@@ -11,16 +11,16 @@ import { verifyNumber } from "./verify_number";
 import { LicenseMiddleware } from "../middlewares/license_middleware/license_middleware";
 
 
-export const exCpRoutes = new Hono();
+export const routes = new Hono();
 
-exCpRoutes.post("/create/verify", verifyNumberValidator, ...verifyNumber);
-exCpRoutes.post("/create", createLicenseValidator, ...createLicense);
+routes.post("/create/verify", verifyNumberValidator, ...verifyNumber);
+routes.post("/create", createLicenseValidator, ...createLicense);
 
-exCpRoutes.post("/activate", activateLicenseValidator, ...activateLicense);
+routes.post("/activate", activateLicenseValidator, ...activateLicense);
  
-exCpRoutes.use(requestHeaderValidator,LicenseMiddleware);
-exCpRoutes.post("/deactivate", ...deactivateLicense);
-exCpRoutes.post('/check', ...checkLicense);
+routes.use(requestHeaderValidator,LicenseMiddleware);
+routes.post("/deactivate", ...deactivateLicense);
+routes.post('/check', ...checkLicense);
 
 
  

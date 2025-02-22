@@ -1,6 +1,6 @@
-import { exCpRoutes } from "./endpoints";
+import { routes } from "./endpoints";
 import { generateLicenseToken } from "./utils/token";
-export default exCpRoutes;
+export const exCpRoutes =  routes;
 
 
 interface PackageConfig {
