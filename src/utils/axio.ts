@@ -1,10 +1,11 @@
 import axios from 'axios';
+import { getConfig } from '..';
 
 const axiosInstance = axios.create({
-  baseURL: process.env.API_BASE_URL,  
+  baseURL: getConfig().env.API_BASE_URL,  
   headers: {
     'Content-Type': 'application/json',
-    'Api-key': process.env.API_KEY,
+    'Api-key': getConfig().env.API_KEY,
   },
 });
 

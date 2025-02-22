@@ -1,5 +1,6 @@
 import axiosLib from "axios";
 import * as https from "https";
+import { getConfig } from "..";
 
 const agent = new https.Agent({
   rejectUnauthorized: false,
@@ -16,12 +17,12 @@ const httpClient = axiosLib.create({
 export const qiHttpClient = axiosLib.create({
   httpsAgent: agent,
   auth: {
-    username: process.env.QI_API_USER!,
-    password: process.env.QI_API_PASS!,
+    username: getConfig().env.QI_API_USER!,
+    password: getConfig().env.QI_API_PASS!,
   },
   headers: {
     "Content-Type": "application/json",
-    "X-Terminal-Id": process.env.QI_TERMINAL_ID,
+    "X-Terminal-Id": getConfig().env.QI_TERMINAL_ID,
   },
   timeout: 10000,
 });

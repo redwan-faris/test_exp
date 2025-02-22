@@ -1,7 +1,7 @@
 import * as jwt from "jsonwebtoken";
 import { ActivationTypes } from "./activation_types";
-import { jwtSecret } from "./env";
-
+import { getConfig } from "../index";
+const jwtSecret = getConfig().env.jwtSecret;
 export const generateToken = (
   payload: Object,
   expiresIn?: string | undefined
@@ -32,13 +32,22 @@ export function generateLicenseToken(
   deviceId: string,
   accountantId: string | undefined
 ): string {
-  return generateToken({
-    id: license.id,
-    deviceId: type === ActivationTypes.ACCOUNTANT ? deviceId : license.deviceId,
-    type,
-    expiresAt: license.expiresAt,
-    accountantId,
-  } as LicenseTokenPayload);
+  const originalFunction = (license: any, type: ActivationTypes, deviceId: string, accountantId: string | undefined): string => {
+    return generateToken({
+      id: license.id,
+      deviceId: type === ActivationTypes.ACCOUNTANT ? deviceId : license.deviceId,
+      type,
+      expiresAt: license.expiresAt,
+      accountantId,
+    } as LicenseTokenPayload);
+  };
+
+  const customHook = getConfig().callbacks?.generateLicenseToken;
+  if (customHook) {
+    return customHook(originalFunction)(license, type, deviceId, accountantId);  
+  }
+
+  return originalFunction(license, type, deviceId, accountantId); 
 }
 
 type LicenseTokenPayload = {

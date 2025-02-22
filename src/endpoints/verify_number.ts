@@ -2,9 +2,9 @@ import { detectLocaleFromAcceptLanguageHeader } from "@intlify/hono";
 import axios, { AxiosError } from "axios"; 
 import { local } from "../localization/localization";
 import { verifyNumberSchema } from "../ validators/verify_number_validator";
-import httpClient from "../utils/http_client copy";
 import axiosInstance from "../utils/axio";
 import { getConfig } from "..";
+import httpClient from "../utils/http_client";
 
 export const verifyNumber = getConfig().factory.createHandlers(async (c) => {
   try {
@@ -24,13 +24,13 @@ export const verifyNumber = getConfig().factory.createHandlers(async (c) => {
 
     try {
       await httpClient.post(
-        `${process.env.OTP_BASE_URL}/send`,
+        `${getConfig().env.OTP_BASE_URL}/send`,
         {
           phoneNumber,
         },
         {
           headers: {
-            authorization: `Bearer ${process.env.OTP_KEY}`,
+            authorization: `Bearer ${getConfig().env.OTP_KEY}`,
             "Accept-Language": detectLocaleFromAcceptLanguageHeader(c),
           },
         }
