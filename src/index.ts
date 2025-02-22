@@ -1,5 +1,4 @@
 import { exCpRoutes } from "./endpoints";
-import { testPackage } from "./utils/test_package";
 import { generateLicenseToken } from "./utils/token";
 export default exCpRoutes;
 
@@ -18,7 +17,6 @@ interface PackageConfig {
   }
   callbacks: {
     generateLicenseToken?: (originalFunction: typeof generateLicenseToken) => typeof generateLicenseToken;
-    test?: (originalFunction: typeof testPackage) => typeof testPackage;
   }
 }
 
