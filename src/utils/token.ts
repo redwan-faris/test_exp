@@ -1,4 +1,3 @@
-import { License } from "@prisma/client";
 import * as jwt from "jsonwebtoken";
 import { ActivationTypes } from "./activation_types";
 import { jwtSecret } from "./env";
@@ -28,7 +27,7 @@ export function verifyLicenseToken(token: string): LicenseTokenPayload {
 }
 
 export function generateLicenseToken(
-  license: License,
+  license: any,
   type: ActivationTypes,
   deviceId: string,
   accountantId: string | undefined

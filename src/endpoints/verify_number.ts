@@ -1,21 +1,18 @@
 import { detectLocaleFromAcceptLanguageHeader } from "@intlify/hono";
 import axios, { AxiosError } from "axios"; 
 import { local } from "../localization/localization";
-import { factory } from "../utils/factory";
 import { verifyNumberSchema } from "../ validators/verify_number_validator";
 import httpClient from "../utils/http_client copy";
+import axiosInstance from "../utils/axio";
+import { getConfig } from "..";
 
-export const verifyNumber = factory.createHandlers(async (c) => {
+export const verifyNumber = getConfig().factory.createHandlers(async (c) => {
   try {
     const { phoneNumber } = verifyNumberSchema.parse(await c.req.json());
 
-    const found = await prisma.garageOwner.findFirst({
-      where: {
-        phoneNumber,
-      },
-    });
+    const response = await axiosInstance.get(`/users/phone/${phoneNumber}`);
 
-    if (found) {
+    if (response.status == 200) {
       return c.json(
         {
           status: 400,
@@ -26,7 +23,6 @@ export const verifyNumber = factory.createHandlers(async (c) => {
     }
 
     try {
-      console.log(detectLocaleFromAcceptLanguageHeader(c));
       await httpClient.post(
         `${process.env.OTP_BASE_URL}/send`,
         {
