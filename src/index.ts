@@ -1,3 +1,4 @@
+import { LicenseMiddleware } from "./middlewares/license_middleware/license_middleware";
 import { generateLicenseToken } from "./utils/token";
 
 interface PackageConfig {
@@ -14,6 +15,8 @@ interface PackageConfig {
   };
   callbacks: {
     generateLicenseToken?: (originalFunction: typeof generateLicenseToken) => typeof generateLicenseToken;
+    licenseMiddleware?: (originalFunction: typeof LicenseMiddleware) => typeof LicenseMiddleware,
+    testPackage?: (originalFunction: typeof testPackage) => typeof testPackage
   };
 }
 
