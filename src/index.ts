@@ -1,4 +1,5 @@
 import { LicenseMiddleware } from "./middlewares/license_middleware/license_middleware";
+import { testPackage } from "./utils/testPackage";
 import { generateLicenseToken } from "./utils/token";
 
 interface PackageConfig {
