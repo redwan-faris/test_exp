@@ -1,5 +1,5 @@
 import { local } from "../../localization/localization";
-import axiosInstance from "../../utils/axio";
+import axiosInstance from "../../utils/axios";
 import { serverActions } from "../../utils/server_actions";
 import { verifyLicenseToken } from "../../utils/token";
 import {getConfig} from '../../index';

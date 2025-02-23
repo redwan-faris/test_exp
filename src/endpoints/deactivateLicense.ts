@@ -1,5 +1,5 @@
 import { detectLocaleFromAcceptLanguageHeader } from "@intlify/hono";
-import axiosInstance from "../utils/axio";
+import axiosInstance from "../utils/axios";
 import { local } from "../localization/localization";
 import { getConfig } from "..";
  

@@ -2,7 +2,7 @@ import { detectLocaleFromAcceptLanguageHeader } from "@intlify/hono";
 import axios, { AxiosError } from "axios"; 
 import { local } from "../localization/localization";
 import { verifyNumberSchema } from "../ validators/verify_number_validator";
-import axiosInstance from "../utils/axio";
+import axiosInstance from "../utils/axios";
 import { getConfig } from "..";
 import httpClient from "../utils/http_client";
 

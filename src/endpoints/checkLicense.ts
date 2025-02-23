@@ -1,6 +1,6 @@
 import { getConfig } from "..";
 import { local } from "../localization/localization";
-import axiosInstance from "../utils/axio";
+import axiosInstance from "../utils/axios";
 import { generateLicenseToken } from "../utils/token";
 
 

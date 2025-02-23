@@ -1,7 +1,7 @@
 import { getConfig } from "..";
 import { createLicenseZodSchema } from "../ validators/create_license.validator";
 import { local } from "../localization/localization";
-import axiosInstance from "../utils/axio";
+import axiosInstance from "../utils/axios";
 
 export const createLicense = getConfig().factory.createHandlers(async (c) => {
   try {

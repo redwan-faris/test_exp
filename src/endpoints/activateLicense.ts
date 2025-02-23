@@ -1,5 +1,5 @@
 
-import axiosInstance from "../utils/axio";
+import axiosInstance from "../utils/axios";
 import { activateLicenseZodSchema } from "../ validators/activiate_license.validator";
 import { local } from "../localization/localization";
 import { generateLicenseToken } from "../utils/token";
