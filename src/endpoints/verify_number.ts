@@ -5,8 +5,8 @@ import { verifyNumberSchema } from "../ validators/verify_number_validator";
 import axiosInstance from "../utils/axios";
 import { getConfig } from "..";
 import httpClient from "../utils/http_client";
-
-export const verifyNumber = getConfig().factory.createHandlers(async (c) => {
+ 
+export const verifyNumber = async (c: any) => {
   try {
     const { phoneNumber } = verifyNumberSchema.parse(await c.req.json());
 
@@ -46,13 +46,10 @@ export const verifyNumber = getConfig().factory.createHandlers(async (c) => {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const axiosError = AxiosError.from(error);
-
         return c.json(axiosError.response?.data as any, 400);
       }
 
-      // parse axios error
       const axiosError = AxiosError.from(error);
-      axiosError.response?.data;
       return c.json(
         {
           status: 500,
@@ -72,4 +69,14 @@ export const verifyNumber = getConfig().factory.createHandlers(async (c) => {
       500
     );
   }
-});
+};
+
+export const verifyNumberWithCallback = (c: any) => {
+  const customHook = getConfig().callbacks?.useVerifyNumber;
+
+  if (customHook) {
+    return customHook(verifyNumber)(c);
+  }
+
+  return verifyNumber(c);
+};

@@ -1,4 +1,9 @@
-  import { LicenseMiddleware } from "./middlewares/license_middleware/license_middleware";
+  import { activateLicense } from "./endpoints/activateLicense";
+import { checkLicense } from "./endpoints/checkLicense";
+import { createLicense } from "./endpoints/createLicense";
+import { deactivateLicense } from "./endpoints/deactivateLicense";
+import { verifyNumber } from "./endpoints/verify_number";
+import { LicenseMiddleware } from "./middlewares/license_middleware/license_middleware";
   import { testPackage } from "./utils/testPackage";
   import { generateLicenseToken } from "./utils/token";
 
@@ -17,6 +22,11 @@
     callbacks: {
       userGenerateLicenseToken?: (originalFunction: typeof generateLicenseToken) => typeof generateLicenseToken;
       useLicenseMiddleware?: (originalFunction: typeof LicenseMiddleware) => typeof LicenseMiddleware,
+      useCheckLicense?: (originalFunction: typeof checkLicense) => typeof checkLicense;
+      useCreateLicense?: (originalFunction: typeof createLicense) => typeof createLicense;  
+      useDeactivateLicense?: (originalFunction: typeof deactivateLicense) => typeof deactivateLicense; 
+      useActivateLicense?: (originalFunction: typeof activateLicense) => typeof activateLicense; 
+      useVerifyNumber?: (originalFunction: typeof verifyNumber) => typeof verifyNumber; 
       testPackage?: (originalFunction: typeof testPackage) => typeof testPackage
     };
     validators:{
