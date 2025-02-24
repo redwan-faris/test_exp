@@ -20,7 +20,9 @@
       testPackage?: (originalFunction: typeof testPackage) => typeof testPackage
     };
     validators:{
-      clientActivateLicenseValidator?: any,
+      clientActivateLicenseZodSchema?: any,
+      clientCreateLicenseZodSchema?: any,
+      clientVerifyNumberZodSchema?: any
     }
   }
 

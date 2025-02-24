@@ -1,32 +1,13 @@
 import { zValidator } from "@hono/zod-validator";
 import { string, z } from "zod";
-import {LicenseTypeEnum} from './../utils/enums/license_type.enum';
-import {ProvincesEnum} from './../utils/enums/provinces_enum';
-import {phoneRegex} from './../utils/constants';
-import { formatZodError } from "../utils/zod";
 
-export const createLicenseZodSchema = z.object({
-  name: z.string().min(1, "License name is required"),
-  customerId: z.number().int().optional(),
-  subscriptionPeriod: z.number().optional(),
-  type: LicenseTypeEnum,
-    customer:z.object({
-        name: z.string().min(1, "customer name is required"),
-        phoneNumber: z.string().regex(phoneRegex,'The Phone number is invalid'),
-          addresses:z.array(
-          z.object({
-            province: ProvincesEnum,
-            address: z.string(),
-          })
-        ),
-        notes: z.string().optional(),
-    }).optional(),
-  addressId: z.string().optional(),
-  address: z.object({
-    address: string(),
-    province:ProvincesEnum  
-  }).optional(),
-});
+import { formatZodError } from "../utils/zod";
+import { getConfig } from "..";
+import { defaultCreateLicenseValidator } from "./default/default_create_license.validator";
+
+const clientValidator = getConfig().validators.clientCreateLicenseZodSchema;
+
+export const createLicenseZodSchema = clientValidator? z.object(clientValidator) : z.object(defaultCreateLicenseValidator);
 
 export const createLicenseValidator = zValidator(
   "json",
