@@ -1,12 +1,10 @@
 import { zValidator } from "@hono/zod-validator";
 import { string, z } from "zod";
 import { formatZodError } from "../utils/zod";
-
-export const activateLicenseZodSchema = z.object({
- 
-    deviceType: z.string(),
-    licenseId: z.string(),
-});
+import { defaultActivateLicenseZodSchema } from "./default/default_activiate_license.validator";
+import {getConfig} from './../index';
+const clientValidator = getConfig().validators.clientActivateLicenseValidator;
+export const activateLicenseZodSchema = clientValidator? z.object(clientValidator) : z.object(defaultActivateLicenseZodSchema);
 
 export const activateLicenseValidator = zValidator(
   "json",
