@@ -27,7 +27,11 @@ interface PackageConfig {
     onDeactivateLicense?: (originalFunction: typeof deactivateLicense) => typeof deactivateLicense;
     onActivateLicense?: (originalFunction: typeof activateLicense) => typeof activateLicense;
     onVerifyNumber?: (originalFunction: typeof verifyNumber) => typeof verifyNumber;
-    testPackage?: (originalFunction: typeof testPackage) => typeof testPackage
+    testPackage?: (originalFunction: typeof testPackage) => typeof testPackage;
+    useActivateLicense?: (originalFunction: typeof activateLicense) => typeof activateLicense;
+    useCheckLicense?: (originalFunction: typeof checkLicense) => typeof checkLicense;
+    useCreateLicense?: (originalFunction: typeof createLicense) => typeof createLicense;
+    useDeactivateLicense?: (originalFunction: typeof deactivateLicense) => typeof deactivateLicense;
   };
   validators: {
     clientActivateLicenseZodSchema?: any,
