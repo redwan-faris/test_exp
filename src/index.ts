@@ -14,7 +14,7 @@ interface PackageConfig {
     OTP_KEY: string;
     API_KEY: string;
     jwtSecret: string;
-    QI_API_onR: string;
+    QI_API_USER: string;
     QI_API_PASS: string;
     QI_TERMINAL_ID: string;
     API_BASE_URL: string;
