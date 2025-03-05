@@ -5,12 +5,12 @@ import { requestHeaderValidator } from "../middlewares/license_middleware/licens
 import { LicenseMiddleware } from "../middlewares/license_middleware/license_middleware";
 
 
-export const routesWithLogin = new Hono();
+export const exRoutesWithLogin = new Hono();
  
  
-routesWithLogin.use(requestHeaderValidator,LicenseMiddleware);
-routesWithLogin.post("/deactivate", deactivateLicenseWithCallback);
-routesWithLogin.post('/check', checkLicenseWithCallback);
+exRoutesWithLogin.use(requestHeaderValidator,LicenseMiddleware);
+exRoutesWithLogin.post("/deactivate", deactivateLicenseWithCallback);
+exRoutesWithLogin.post('/check', checkLicenseWithCallback);
 
 
  
