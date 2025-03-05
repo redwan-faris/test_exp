@@ -64,11 +64,20 @@ export function isConfigInitialized(): boolean {
   return globalConfig !== null;
 }
 
-export const exCpRoutes = new Proxy({}, {
+export const exRoutesWithoutLogin = new Proxy({}, {
   get: function (target, prop) {
     if (!globalConfig) {
       throw new Error("Config not set. Please call init() first.");
     }
-    return _routes[prop];
+    return _routes.exRoutesWithoutLogin[prop];
+  }
+});
+
+export const exRoutesWithLogin = new Proxy({}, {
+  get: function (target, prop) {
+    if (!globalConfig) {
+      throw new Error("Config not set. Please call init() first.");
+    }
+    return _routes.exRoutesWithLogin[prop];
   }
 });
