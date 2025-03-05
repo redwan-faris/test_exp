@@ -72,7 +72,7 @@ export const verifyNumber = async (c: any) => {
 };
 
 export const verifyNumberWithCallback = (c: any) => {
-  const customHook = getConfig().callbacks?.useVerifyNumber;
+  const customHook = getConfig().callbacks?.onVerifyNumber;
 
   if (customHook) {
     return customHook(verifyNumber)(c);

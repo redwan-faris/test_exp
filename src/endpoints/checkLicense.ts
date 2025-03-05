@@ -25,7 +25,7 @@ export const checkLicense = async (c: any) => {
 };
 
 export const checkLicenseWithCallback = (c: any) => {
-  const customHook = getConfig().callbacks?.useCheckLicense;
+  const customHook = getConfig().callbacks?.onCheckLicense;
 
   if (customHook) {
     return customHook(checkLicense)(c);

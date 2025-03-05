@@ -20,7 +20,7 @@ export const  createLicense = async (c: any) => {
 };
 
 export const createLicenseWithCallback = (c: any) => {
-  const customHook = getConfig().callbacks?.useCreateLicense;
+  const customHook = getConfig().callbacks?.onCreateLicense;
 
   if (customHook) {
     return customHook(createLicense)(c);

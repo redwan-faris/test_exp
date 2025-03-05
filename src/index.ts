@@ -28,10 +28,8 @@ interface PackageConfig {
     onActivateLicense?: (originalFunction: typeof activateLicense) => typeof activateLicense;
     onVerifyNumber?: (originalFunction: typeof verifyNumber) => typeof verifyNumber;
     testPackage?: (originalFunction: typeof testPackage) => typeof testPackage;
-    useActivateLicense?: (originalFunction: typeof activateLicense) => typeof activateLicense;
-    useCheckLicense?: (originalFunction: typeof checkLicense) => typeof checkLicense;
-    useCreateLicense?: (originalFunction: typeof createLicense) => typeof createLicense;
-    useDeactivateLicense?: (originalFunction: typeof deactivateLicense) => typeof deactivateLicense;
+
+
   };
   validators: {
     clientActivateLicenseZodSchema?: any,
@@ -46,8 +44,8 @@ let _routes: any = null;
 export function init(config: PackageConfig): void {
   if (config) {
     globalConfig = config;
-    const { routes } = require("./endpoints");
-    _routes = routes;
+    const { exRoutesWithoutLogin, exRoutesWithLogin } = require("./endpoints");
+    _routes = { exRoutesWithoutLogin, exRoutesWithLogin };
   } else {
     throw new Error("Invalid configuration provided");
   }

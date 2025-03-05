@@ -22,7 +22,7 @@ export const deactivateLicense = async (c: any) => {
 };
 
 export const deactivateLicenseWithCallback = (c: any) => {
-  const customHook = getConfig().callbacks?.useDeactivateLicense;
+  const customHook = getConfig().callbacks?.onDeactivateLicense;
 
   if (customHook) {
     return customHook(deactivateLicense)(c);

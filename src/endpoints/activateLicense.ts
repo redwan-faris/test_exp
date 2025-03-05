@@ -24,7 +24,7 @@ export const activateLicense = async (c: any) => {
 };
 
 export const activateLicenseWithCallback = (c: any) => {
-  const customHook = getConfig().callbacks?.useActivateLicense;
+  const customHook = getConfig().callbacks?.onActivateLicense;
 
   if (customHook) {
     return customHook(activateLicense)(c);
