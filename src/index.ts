@@ -9,6 +9,13 @@ import { generateLicenseToken } from "./utils/token";
 
 interface PackageConfig {
   factory: any;
+  urls?:{
+    activateLicense: string;
+    checkLicense: string;
+    createLicense: string;
+    deactivateLicense: string;
+    verifyNumber: string;
+  };
   env: {
     OTP_BASE_URL: string;
     OTP_KEY: string;
