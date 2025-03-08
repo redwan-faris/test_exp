@@ -4,7 +4,7 @@ import { formatZodError } from "../utils/zod";
 import { getConfig } from "..";
 import { defaultVerifyNumberZodSchema } from "./default/default_verify_number.validator";
 
-const clientValidator = getConfig().validators.clientVerifyNumberZodSchema;
+const clientValidator = getConfig().validators?.clientVerifyNumberZodSchema;
 export const verifyNumberSchema = clientValidator? z.object(clientValidator) : z.object(defaultVerifyNumberZodSchema);
 
 
