@@ -19,7 +19,7 @@ interface PackageConfig {
     QI_TERMINAL_ID: string;
     API_BASE_URL: string;
   };
-  callbacks: {
+  callbacks?: {
     onrGenerateLicenseToken?: (originalFunction: typeof generateLicenseToken) => typeof generateLicenseToken;
     onLicenseMiddleware?: (originalFunction: typeof LicenseMiddleware) => typeof LicenseMiddleware,
     onCheckLicense?: (originalFunction: typeof checkLicense) => typeof checkLicense;
@@ -31,7 +31,7 @@ interface PackageConfig {
 
 
   };
-  validators: {
+  validators?: {
     clientActivateLicenseZodSchema?: any,
     clientCreateLicenseZodSchema?: any,
     clientVerifyNumberZodSchema?: any
