@@ -12,7 +12,6 @@ export const LicenseMiddleware = getConfig().factory.createMiddleware(async (c, 
       const token = c.req.header("authorization")?.split(" ")[1]!;
       const payload = await verifyLicenseToken(token);
       const response = await axiosInstance.get(`licenses/project/check/${payload.id}`);
-
       if (!response) {
         return c.json(
           {
@@ -24,7 +23,7 @@ export const LicenseMiddleware = getConfig().factory.createMiddleware(async (c, 
         );
       }
 
-      c.set("license", response.data.license);
+      c.set("license", response.data);
       c.set("device", deviceId);
       c.set("version", version);
       return next();
@@ -40,7 +39,7 @@ export const LicenseMiddleware = getConfig().factory.createMiddleware(async (c, 
     }
   };
 
-  const customHook = getConfig().callbacks?.licenseMiddleware;
+  const customHook = getConfig().callbacks?.onLicenseMiddleware;
   if (customHook) {
     return customHook(originalFunction)(c, next);
   }

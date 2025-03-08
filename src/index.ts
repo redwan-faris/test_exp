@@ -52,7 +52,14 @@ export function init(config: PackageConfig): void {
   if (config) {
     globalConfig = config;
     const { exRoutesWithoutLogin, exRoutesWithLogin } = require("./endpoints");
-    _routes = { exRoutesWithoutLogin, exRoutesWithLogin };
+    const { LicenseMiddleware } = require("./middlewares/license_middleware/license_middleware");
+    const { licenseMiddlewareValidator } = require("./middlewares/license_middleware/license_middleware_validator");
+    _routes = { 
+      exRoutesWithoutLogin, 
+      exRoutesWithLogin,
+      LicenseMiddleware,
+      licenseMiddlewareValidator,
+    };
   } else {
     throw new Error("Invalid configuration provided");
   }
@@ -84,5 +91,23 @@ export const exRoutesWithLogin = new Proxy({}, {
       throw new Error("Config not set. Please call init() first.");
     }
     return _routes.exRoutesWithLogin[prop];
+  }
+});
+
+export const licenseMiddleware = new Proxy({}, {
+  get: function (target, prop) {
+    if (!globalConfig) {
+      throw new Error("Config not set. Please call init() first.");
+    }
+    return _routes.LicenseMiddleware[prop];
+  }
+});
+
+export const licenseMiddlewareValidators = new Proxy({}, {
+  get: function (target, prop) {
+    if (!globalConfig) {
+      throw new Error("Config not set. Please call init() first.");
+    }
+    return _routes.licenseMiddlewareValidator[prop];
   }
 });
