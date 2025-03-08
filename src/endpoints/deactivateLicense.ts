@@ -5,8 +5,13 @@ import { getConfig } from "..";
 
 export const deactivateLicense = async (c: any) => {
   try {
+    const device_id = c.req.header("device");
     const license = c.get('license');
-    const response = await axiosInstance.patch(`/licenses/project/deactivate/${license.id}`);
+    const response = await axiosInstance.patch(`/licenses/project/deactivate/${license.id}`, {}, {
+      headers: {
+        'device': device_id
+      }
+    });
     return c.json(response.data, 200);
   } catch (error: any) {
     if (error.response?.data) {
@@ -18,7 +23,7 @@ export const deactivateLicense = async (c: any) => {
 
 export const deactivateLicenseWithCallback = (c: any) => {
   const customHook = getConfig().callbacks?.onDeactivateLicense;
-
+  
   if (customHook) {
     return customHook(deactivateLicense)(c);
   }
