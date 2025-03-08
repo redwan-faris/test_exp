@@ -8,16 +8,11 @@ export const deactivateLicense = async (c: any) => {
     const license = c.get('license');
     const response = await axiosInstance.patch(`/licenses/project/deactivate/${license.id}`);
     return c.json(response.data, 200);
-  } catch (error) {
-    console.log(error);
-
-    return c.json(
-      {
-        status: 500,
-        message: local(c, "500"),
-      },
-      500
-    );
+  } catch (error: any) {
+    if (error.response?.data) {
+      return c.json(error.response.data, error.response.status || 500);
+    }
+    return c.json({ status: 500, message: local(c, "500") }, 500);
   }
 };
 

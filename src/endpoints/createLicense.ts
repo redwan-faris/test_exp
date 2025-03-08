@@ -13,8 +13,10 @@ export const  createLicense = async (c: any) => {
     console.log(data)
 
     return c.json(response.data, 200);
-  } catch (error) {
-    console.error(error); 
+  } catch (error: any) {
+    if (error.response?.data) {
+      return c.json(error.response.data, error.response.status || 500);
+    }
     return c.json({ status: 500, message: local(c, "500") }, 500);
   }
 };

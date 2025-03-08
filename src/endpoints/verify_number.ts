@@ -58,16 +58,11 @@ export const verifyNumber = async (c: any) => {
         500
       );
     }
-  } catch (error) {
-    console.log(error);
-
-    return c.json(
-      {
-        status: 500,
-        message: local(c, "500"),
-      },
-      500
-    );
+  } catch (error: any) {
+    if (error.response?.data) {
+      return c.json(error.response.data, error.response.status || 500);
+    }
+    return c.json({ status: 500, message: local(c, "500") }, 500);
   }
 };
 
