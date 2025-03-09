@@ -1,6 +1,6 @@
 import z from 'zod'
 
 export const defaultActivateLicenseValidator = {
-    deviceType: z.string(),
-    licenseId: z.string(),
+    key: z.string(),
+    accountantPassword: z.string().optional(),
 };

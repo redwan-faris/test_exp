@@ -11,7 +11,8 @@ export const activateLicense = async (c: any) => {
     const data = activateLicenseZodSchema.parse(await c.req.json());
     data['deviceId'] = device_id;
     data['version'] = version;
-
+    data['licenseId'] = data.key;
+    delete data.key;
     const response = await axiosInstance.post('/licenses/project/activate', data);
     const license = response.data.license;
     const token = generateLicenseToken(license, license.type, device_id, undefined);
