@@ -12,8 +12,14 @@ export const deactivateLicense = async (c: any) => {
         'device': device_id
       }
     });
-    return c.json(response.data, 200);
-  } catch (error: any) {
+    return c.json(
+      {
+        status: 200,
+        message: local(c, "licenseDeactivated"),
+      },
+      200
+    );
+    } catch (error: any) {
     if (error.response?.data) {
       return c.json(error.response.data, error.response.status || 500);
     }

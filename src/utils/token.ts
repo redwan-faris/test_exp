@@ -42,7 +42,7 @@ export function generateLicenseToken(
     } as LicenseTokenPayload);
   };
 
-  const customHook = getConfig().callbacks?.useActivateLicense;
+  const customHook = getConfig().callbacks?.onLicenseMiddleware;
   if (customHook) {
     return customHook(originalFunction)(license, type, deviceId, accountantId);  
   }
