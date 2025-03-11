@@ -15,9 +15,10 @@ export const activateLicense = async (c: any) => {
     delete data.key;
     const response = await axiosInstance.post('/licenses/project/activate', data);
     const license = response.data.license;
-    const token = generateLicenseToken(license, license.type, device_id, undefined);
+    const login = response.data
+    const token = generateLicenseToken(license, license.type, device_id, undefined,login.deviceId);
 
-    return c.json({ token, license }, 200);
+    return c.json({ token, license ,login}, 200);
   } catch (error: any) {
     if (error.response?.data) {
       return c.json(error.response.data, error.response.status || 500);

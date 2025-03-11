@@ -30,12 +30,14 @@ export function generateLicenseToken(
   license: any,
   type: ActivationTypes,
   deviceId: string,
-  accountantId: string | undefined
+  accountantId: string | undefined,
+  licenseDeviceId?: string
 ): string {
-  const originalFunction = (license: any, type: ActivationTypes, deviceId: string, accountantId: string | undefined): string => {
+  const originalFunction = (license: any, type: ActivationTypes, deviceId: string, accountantId: string | undefined, licenseDeviceId?: string): string => {
+    console.log(licenseDeviceId)
     return generateToken({
       id: license.id,
-      deviceId: type === ActivationTypes.ACCOUNTANT ? deviceId : license.deviceId,
+      deviceId: type === ActivationTypes.ACCOUNTANT ? deviceId : licenseDeviceId,
       type,
       expiresAt: license.expiresAt,
       accountantId,
@@ -44,12 +46,11 @@ export function generateLicenseToken(
 
   const customHook = getConfig().callbacks?.onLicenseMiddleware;
   if (customHook) {
-    return customHook(originalFunction)(license, type, deviceId, accountantId);  
+    return customHook(originalFunction)(license, type, deviceId, accountantId,licenseDeviceId);  
   }
 
-  return originalFunction(license, type, deviceId, accountantId); 
+  return originalFunction(license, type, deviceId, accountantId,licenseDeviceId); 
 }
-
 type LicenseTokenPayload = {
   id: string;
   deviceId: string;
