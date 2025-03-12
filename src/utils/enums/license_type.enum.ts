@@ -2,7 +2,8 @@ import { z } from "zod";
 
 export const LicenseTypeEnum = z.enum([
     "TEST",
-    "PRODUCTION"
+    "DEMO",
+    "NORMAL"
 ]);
 
 export type LicenseTypeEnum = z.infer<typeof LicenseTypeEnum>;
