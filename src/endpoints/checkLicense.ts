@@ -6,10 +6,11 @@ import { generateLicenseToken } from "../utils/token";
 // Original checkLicense function
 export const checkLicense = async (c: any) => {
   try {
-    const license = c.get("license");
+    const login = c.get("license");
+    const license = login.license;
     const { garage, deviceId: device, ...rest } = license;
     const response = await axiosInstance.get(`licenses/project/check/${license.id}`);
-    const token = generateLicenseToken(license, license.type, device, undefined);
+    const token = generateLicenseToken(license, license.type, response.data.deviceId, undefined);
 
     return c.json(
       {
