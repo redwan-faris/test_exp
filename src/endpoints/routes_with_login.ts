@@ -12,7 +12,7 @@ export const exRoutesWithLogin = new Hono();
 const urls = getConfig().urls;
 exRoutesWithLogin.use(requestHeaderValidator,LicenseMiddleware);
 exRoutesWithLogin.post(urls?.deactivateLicense ? urls?.deactivateLicense : "/deactivate", deactivateLicenseWithCallback);
-exRoutesWithLogin.post(urls?.checkLicense ? urls?.checkLicense : '/check', checkLicenseWithCallback);
+exRoutesWithLogin.post(urls?.checkLicense ? urls?.checkLicense : '/verify', checkLicenseWithCallback);
 
 
  
