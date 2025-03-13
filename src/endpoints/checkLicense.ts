@@ -10,7 +10,7 @@ export const checkLicense = async (c: any) => {
     const license = login.license;
     const { garage, deviceId: device, ...rest } = license;
     const response = await axiosInstance.get(`licenses/project/check/${license.id}`);
-    const token = generateLicenseToken(license, license.type, response.data.deviceId, undefined);
+    const token = generateLicenseToken(license, license.type, response.data.deviceId, undefined,response.data.deviceId);
 
     return c.json(
       {
