@@ -60,6 +60,7 @@ export function init(config: PackageConfig): void {
       LicenseMiddleware,
       licenseMiddlewareValidator,
     };
+
   } else {
     throw new Error("Invalid configuration provided");
   }
@@ -94,12 +95,14 @@ export const exRoutesWithLogin = new Proxy({}, {
   }
 });
 
-export const licenseMiddleware = new Proxy({}, {
-  get: function (target, prop) {
+
+
+export const licenseMiddleware = new Proxy(function() {}, {
+  apply: function(target, thisArg, args) {
     if (!globalConfig) {
       throw new Error("Config not set. Please call init() first.");
     }
-    return _routes.LicenseMiddleware[prop];
+    return _routes.LicenseMiddleware.apply(thisArg, args);
   }
 });
 
