@@ -12,7 +12,7 @@ export const verifyNumber = async (c: any) => {
 
     const response = await axiosInstance.get(`/users/phone/${phoneNumber}`);
 
-    if (response.status == 200) {
+    if (response.data > 0) {
       return c.json(
         {
           status: 400,
