@@ -30,7 +30,8 @@ export const verifyNumber = async (c: any) => {
         },
         {
           headers: {
-            authorization: `Bearer ${getConfig().env.OTP_KEY}`,
+            'Api-key': getConfig().env.OTP_KEY,
+            'Content-Type': 'application/json',
             "Accept-Language": detectLocaleFromAcceptLanguageHeader(c),
           },
         }
