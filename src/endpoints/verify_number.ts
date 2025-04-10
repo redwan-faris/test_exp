@@ -11,6 +11,7 @@ export const verifyNumber = async (c: any) => {
     const { phoneNumber } = verifyNumberSchema.parse(await c.req.json());
 
     const response = await axiosInstance.get(`/users/phone/${phoneNumber}`);
+ 
 
     if (response.data > 0) {
       return c.json(
@@ -23,7 +24,7 @@ export const verifyNumber = async (c: any) => {
     }
 
     try {
-      await httpClient.post(
+      const res = await httpClient.post(
         `${getConfig().env.OTP_BASE_URL}/send`,
         {
           phoneNumber,
@@ -36,6 +37,8 @@ export const verifyNumber = async (c: any) => {
           },
         }
       );
+
+      console.log(res.data)
 
       return c.json(
         {

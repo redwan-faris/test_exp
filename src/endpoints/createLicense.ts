@@ -1,20 +1,42 @@
+import httpClient from "../utils/http_client";
 import { getConfig } from "..";
 import { createLicenseZodSchema } from "../ validators/create_license.validator";
 import { local } from "../localization/localization";
 import axiosInstance from "../utils/axios";
 import { getDeviceId } from "../utils/context_helper";
+import { detectLocaleFromAcceptLanguageHeader } from "@intlify/hono";
 
     export const createLicense = async (c: any) => {
-      try {
+      try { 
         const rawData = await c.req.json();
         const parsedData = createLicenseZodSchema.parse(rawData);
-    
+        await httpClient.post(
+          `${getConfig().env.OTP_BASE_URL}/verify`,
+          {
+            phoneNumber:parsedData.phoneNumber,
+            otp:parsedData.otp
+          },
+          {
+            headers: {
+              'Api-key': getConfig().env.OTP_KEY,
+              'Content-Type': 'application/json',
+              "Accept-Language": detectLocaleFromAcceptLanguageHeader(c),
+            },
+          }
+        );
         const transformedData = {
           name: parsedData.garageName,
+          deviceId:getDeviceId(c),
           type:"TEST",  
           customer: {
             name: parsedData.userName,
             phoneNumber: parsedData.phoneNumber,
+            addresses:[
+              {
+                regionId: parsedData.regionId,
+                nearestLandmark: parsedData.nearestLandmark,
+              },
+            ],
           },
           address: {
             regionId: parsedData.regionId,
@@ -22,13 +44,13 @@ import { getDeviceId } from "../utils/context_helper";
           },
         };
     
-        transformedData['deviceId'] = getDeviceId(c);
     
-        const response = await axiosInstance.post('/licenses/project/', transformedData);
+        const response = await axiosInstance.post('/licenses/project', transformedData);
     
         return c.json(response.data, 200);
     
       } catch (error: any) {
+        console.log(error)
         if (error.response?.data) {
           return c.json(error.response.data, error.response.status || 500);
         }
