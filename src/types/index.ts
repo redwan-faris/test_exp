@@ -1,24 +1,88 @@
+// Base Types
+export interface BaseResponse {
+  status: number;
+  message: string;
+}
+
+// License Types
 export interface License {
   id: string;
-  key: string;
-  type: string;
-  status: 'active' | 'inactive' | 'expired';
-  deviceId?: string;
-  version?: string;
+  name: string;
+  isActive: boolean;
+  customerId: number;
+  projectId: string;
+  expiresAt: string;
+  createdById: string | null;
+  type: "TEST" | string;
+  addressId: string;
+  allowedLoginAttempt: number;
+  createdAt: string;
+  updatedAt: string;
+  customer: Customer;
+  address: Address;
+  province: string;
+}
+
+export interface Customer {
+  id: number;
+  name: string;
+  phoneNumber: string;
+  secondaryPhoneNumber: string | null;
+  notes: string | null;
+  referredById: string | null;
   createdAt: string;
   updatedAt: string;
 }
 
-export interface LicenseResponse {
-  status: number;
-  message: string;
-  data?: {
-    license?: License;
-    token?: string;
-    deviceId?: string;
-  };
+export interface Address {
+  id: string;
+  nearestLandmark: string;
+  regionId: number;
+  createdAt: string;
+  updatedAt: string;
+  customerId: string | null;
+  region: Region;
 }
 
+export interface Region {
+  id: number;
+  name: string;
+  cityId: number;
+  city: City;
+}
+
+export interface City {
+  id: number;
+  name: string;
+}
+
+export interface Login {
+  id: string;
+  deviceId: string;
+  version: string;
+  deviceType: string | null;
+  isActive: boolean;
+  logInAt: string;
+  logOutAt: string | null;
+  licenseId: string;
+  createdAt: string;
+  updatedAt: string;
+  license: License;
+}
+
+// Response Types
+export interface TokenResponse {
+  token: string;
+  license: License;
+  login: Login;
+}
+
+export interface LicenseResponse {
+  license: License;
+  token: string;
+}
+
+// Request Types
 export interface ActivateLicenseRequest {
   key: string;
   deviceId?: string;
@@ -35,25 +99,45 @@ export interface CheckLicenseRequest {
   deviceId?: string;
 }
 
+// OTP Types
 export interface VerifyNumberRequest {
   number: string;
   code?: string;
 }
 
-export interface VerifyNumberResponse {
-  status: number;
-  message: string;
+export interface VerifyNumberResponse extends BaseResponse {
   data?: {
     code?: string;
     verified?: boolean;
   };
 }
 
+// Middleware Types
 export interface LicenseMiddlewareOptions {
   requireDeviceId?: boolean;
   requireVersion?: boolean;
 }
 
+// Token Types
+export interface LicenseTokenPayload {
+  licenseId: string;
+  type: string;
+  deviceId: string;
+  version?: string;
+  iat?: number;
+  exp?: number;
+}
+
+// Error Types
+export interface ErrorResponse extends BaseResponse {
+  error?: {
+    code?: string;
+    details?: string;
+    stack?: string;
+  };
+}
+
+// Configuration Types
 export interface PackageConfig {
   factory: any;
   urls?: {
@@ -90,8 +174,18 @@ export interface PackageConfig {
   };
 }
 
-export interface ErrorResponse {
+// API Response Types
+export interface ApiResponse<T = any> {
   status: number;
-  message: string;
-  error?: any;
-} 
+  data: T;
+  message?: string;
+}
+
+// Headers Types
+export interface LicenseHeaders {
+  device?: string;
+  version?: string;
+  authorization?: string;
+}
+ 
+ 
