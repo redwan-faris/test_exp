@@ -4,8 +4,7 @@ import { TokenResponseSchema } from "../types/schemas";
 import axiosInstance from "../utils/axios";
 import { generateLicenseToken } from "../utils/token";
 
-// Original checkLicense function
-export const checkLicense =getConfig().factory.createHandlers(async (c) => { 
+const checkLicenseHandler = async (c: any) => { 
   try {
     const login = c.get("license");
     const license = login.license;
@@ -27,14 +26,16 @@ export const checkLicense =getConfig().factory.createHandlers(async (c) => {
     }
     return c.json({ status: 500, message: local(c, "500") }, 500);
   }
-});
+};
+
+export const checkLicense = getConfig().factory.createHandlers(checkLicenseHandler);
 
 export const checkLicenseWithCallback = (c: any) => {
   const customHook = getConfig().callbacks?.onCheckLicense;
 
   if (customHook) {
-    return customHook(checkLicense)(c);
+    return customHook(checkLicense[0])(c);
   }
 
-  return checkLicense(c);
+  return checkLicense[0](c);
 };

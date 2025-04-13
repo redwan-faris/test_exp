@@ -3,7 +3,7 @@ import axiosInstance from "../utils/axios";
 import { local } from "../localization/localization";
 import { getConfig } from "..";
 
-export const deactivateLicense = getConfig().factory.createHandlers(async (c) => { 
+const deactivateLicenseHandler = async (c: any) => { 
   try {
     const device_id = c.req.header("device");
     const license = c.get('license');
@@ -25,14 +25,16 @@ export const deactivateLicense = getConfig().factory.createHandlers(async (c) =>
     }
     return c.json({ status: 500, message: local(c, "500") }, 500);
   }
-});
+};
+
+export const deactivateLicense = getConfig().factory.createHandlers(deactivateLicenseHandler);
 
 export const deactivateLicenseWithCallback = (c: any) => {
   const customHook = getConfig().callbacks?.onDeactivateLicense;
   
   if (customHook) {
-    return customHook(deactivateLicense)(c);
+    return customHook(deactivateLicense[0])(c);
   }
 
-  return deactivateLicense(c);
+  return deactivateLicense[0](c);
 };
