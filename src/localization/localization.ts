@@ -1,27 +1,30 @@
-import {
-  defineI18nMiddleware,
-  detectLocaleFromAcceptLanguageHeader,
-  useTranslation,
-} from "@intlify/hono";
 import { Context } from "hono";
+import { ar } from "./ar_IQ";
 import { en } from "./en_US";
 
-export const i18nMiddleware = defineI18nMiddleware({
-  // detect locale with `accept-language` header
-  locale: detectLocaleFromAcceptLanguageHeader,
-  fallbackLocale: "en",
-  messages: {
-    en,
-  },
-});
-export type LocalizationKeys = keyof typeof en;
-export type TranslationKeys = typeof en;
-
+const messages = {
+  ar,
+  "en-US": en,
+}
 export function local(
   c: Context,
-  key: LocalizationKeys,
+  key: keyof typeof en,
   params?: Record<string, unknown>
-) {
-  const t = useTranslation(c);
-  return t(key.toString(), params ? params! : {});
+): string {
+  const locale = c.get("locale") as string;  
+  const translations = messages[locale] || messages["ar"];
+  let message = translations[key] || key;  
+
+  if (params) {
+    Object.keys(params).forEach((param) => {
+      message = message.replace(`{${param}}`, String(params[param]));
+    });
+  }
+
+  return message;
 }
+
+export type LocalizationKeys = keyof typeof en;
+
+
+
