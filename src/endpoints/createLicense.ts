@@ -47,7 +47,7 @@ import { detectLocaleFromAcceptLanguageHeader } from "@intlify/hono";
     
         const response = await axiosInstance.post('/licenses/project', transformedData);
     
-        return c.json({licenseKey:response.data.licenseKey}, 200);
+        return c.json({licenseKey:response.data.id}, 200);
     
       } catch (error: any) {
         console.log(error)
