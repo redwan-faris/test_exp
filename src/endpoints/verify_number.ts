@@ -5,13 +5,12 @@ import { verifyNumberSchema } from "../ validators/verify_number_validator";
 import axiosInstance from "../utils/axios";
 import { getConfig } from "..";
 import httpClient from "../utils/http_client";
- 
+
 const verifyNumberHandler = async (c: any) => { 
   try {
     const { phoneNumber } = verifyNumberSchema.parse(await c.req.json());
 
     const response = await axiosInstance.get(`/users/phone/${phoneNumber}`);
- 
 
     if (response.data > 0) {
       return c.json(
@@ -38,8 +37,6 @@ const verifyNumberHandler = async (c: any) => {
         }
       );
 
-      console.log(res.data)
-
       return c.json(
         {
           status: 200,
@@ -49,11 +46,13 @@ const verifyNumberHandler = async (c: any) => {
       );
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        const axiosError = AxiosError.from(error);
-        return c.json(axiosError.response?.data as any, 400);
+        const axiosError = error as AxiosError;
+        return c.json(axiosError.response?.data || {
+          status: 400,
+          message: local(c, "failedToSendOtp"),
+        }, 400);
       }
 
-      const axiosError = AxiosError.from(error);
       return c.json(
         {
           status: 500,
@@ -66,18 +65,22 @@ const verifyNumberHandler = async (c: any) => {
     if (error.response?.data) {
       return c.json(error.response.data, error.response.status || 500);
     }
-    return c.json({ status: 500, message: local(c, "500") }, 500);
+    return c.json({ 
+      status: 500, 
+      message: local(c, "500") 
+    }, 500);
   }
 };
 
-export const verifyNumber = getConfig().factory.createHandlers(verifyNumberHandler);
+const handlers = getConfig().factory.createHandlers(verifyNumberHandler);
+export const verifyNumber = handlers[0];
 
 export const verifyNumberWithCallback = (c: any) => {
   const customHook = getConfig().callbacks?.onVerifyNumber;
 
   if (customHook) {
-    return customHook(verifyNumber[0])(c);
+    return customHook(verifyNumber)(c);
   }
 
-  return verifyNumber[0](c);
+  return verifyNumber(c);
 };
