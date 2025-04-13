@@ -22,7 +22,7 @@ export const RegionSchema = z.object({
 
 export const AddressSchema = z.object({
   id: z.string(),
-  nearestLandmark: z.string(),
+  nearestLandmark: z.string().optional().nullable(),
   regionId: z.number(),
   createdAt: z.string(),
   updatedAt: z.string(),
@@ -50,12 +50,12 @@ export const LicenseSchema = z.object({
   expiresAt: z.string(),
   createdById: z.string().nullable(),
   type: z.nativeEnum(ActivationTypes),
-  addressId: z.string(),
+  addressId: z.string().optional().nullable(),
   allowedLoginAttempt: z.number(),
   createdAt: z.string(),
   updatedAt: z.string(),
   customer: CustomerSchema,
-  address: AddressSchema,
+  address: AddressSchema.optional().nullable(),
   province: z.string()
 });
 

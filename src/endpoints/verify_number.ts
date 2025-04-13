@@ -36,6 +36,7 @@ const verifyNumberHandler = async (c: any) => {
           },
         }
       );
+      console.log(res.data)
 
       return c.json(
         {

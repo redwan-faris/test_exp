@@ -7,7 +7,7 @@ import { getLicense } from "./endpoints/get_license";
 import { ErrorResponse } from "./types/schemas";
 import { testPackage } from "./utils/testPackage";
 import { generateLicenseToken } from "./utils/token";
- 
+import { LicenseMiddleware } from "./middlewares/license_middleware/license_middleware";
 interface PackageConfig {
   factory: any;
   urls?:{
@@ -29,7 +29,6 @@ interface PackageConfig {
   };
   callbacks?: {
     onrGenerateLicenseToken?: (originalFunction: typeof generateLicenseToken) => typeof generateLicenseToken;
-    onLicenseMiddleware?: (originalFunction: typeof licenseMiddleware) => typeof licenseMiddleware,
     onCheckLicense?: (originalFunction: typeof checkLicense) => typeof checkLicense;
     onCreateLicense?: (originalFunction: typeof createLicense) => typeof createLicense;
     onDeactivateLicense?: (originalFunction: typeof deactivateLicense) => typeof deactivateLicense;
@@ -51,11 +50,12 @@ let _routes: any = null;
 export function init(config: PackageConfig): void {
   if (config) {
     globalConfig = config;
-    const { exRoutesWithoutLogin, exRoutesWithLogin } = require("./endpoints");
+    const {  exRoutes } = require("./endpoints");
+    const { LicenseMiddleware } = require("./middlewares/license_middleware/license_middleware");
     _routes = { 
-      exRoutesWithoutLogin, 
-      exRoutesWithLogin,
-      licenseMiddleware: licenseMiddleware()
+       
+      exRoutes,
+      LicenseMiddleware
     };
   } else {
     throw new Error("Invalid configuration provided");
@@ -73,21 +73,14 @@ export function isConfigInitialized(): boolean {
   return globalConfig !== null;
 }
 
-export const exRoutesWithoutLogin = new Proxy({}, {
-  get: function (target, prop) {
-    if (!globalConfig) {
-      throw new Error("Config not set. Please call init() first.");
-    }
-    return _routes.exRoutesWithoutLogin[prop];
-  }
-});
+ 
 
-export const exRoutesWithLogin = new Proxy({}, {
+export const exRoutes = new Proxy({}, {
   get: function (target, prop) {
     if (!globalConfig) {
       throw new Error("Config not set. Please call init() first.");
     }
-    return _routes.exRoutesWithLogin[prop];
+    return _routes.exRoutes[prop];
   }
 });
 

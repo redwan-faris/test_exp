@@ -1,4 +1,3 @@
-import { exRoutesWithoutLogin } from "./routes_without_login";
-import { exRoutesWithLogin } from "./routes_with_login";
+import { exRoutes } from "./routes";
 
-export { exRoutesWithoutLogin, exRoutesWithLogin };
+export {exRoutes };
