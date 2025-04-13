@@ -1,5 +1,6 @@
 import { getConfig } from "..";
 import { local } from "../localization/localization";
+import { TokenResponseSchema } from "../types/schemas";
 import axiosInstance from "../utils/axios";
 import { generateLicenseToken } from "../utils/token";
 
@@ -15,12 +16,9 @@ export const checkLicense = async (c: any) => {
       }
     });
     const token = generateLicenseToken(license, license.type, response.data.deviceId, undefined,response.data.deviceId);
-
+    const tokenResponse = TokenResponseSchema.parse({token, license ,login});
     return c.json(
-      {
-        license,
-        token
-      },
+      tokenResponse,
       200
     );
   } catch (error: any) {

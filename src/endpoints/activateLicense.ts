@@ -3,6 +3,7 @@ import { activateLicenseZodSchema } from "../ validators/activiate_license.valid
 import { local } from "../localization/localization";
 import { generateLicenseToken } from "../utils/token";
 import { getConfig } from './../index'
+import { LicenseSchema, LoginSchema, TokenResponseSchema } from "../types/schemas";
 
 export const activateLicense = async (c: any) => {
   try {
@@ -14,11 +15,11 @@ export const activateLicense = async (c: any) => {
     data['licenseId'] = data.key;
     delete data.key;
     const response = await axiosInstance.post('/licenses/project/activate', data);
-    const license = response.data.license;
-    const login = response.data
+    const license = LicenseSchema.parse(response.data.license);
+    const login = LoginSchema.parse(response.data);
     const token = generateLicenseToken(license, license.type, device_id, undefined,login.deviceId);
-
-    return c.json({ token, license ,login}, 200);
+    const tokenResponse = TokenResponseSchema.parse({token, license ,login});
+    return c.json(tokenResponse, 200);
   } catch (error: any) {
     if (error.response?.data) {
       return c.json(error.response.data, error.response.status || 500);

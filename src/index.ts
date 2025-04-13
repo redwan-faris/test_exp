@@ -8,7 +8,7 @@ import {
   VerifyNumberResponse, 
   LicenseMiddlewareOptions, 
   ErrorResponse 
-} from './types';
+} from './types/general_types.';
 
 import { activateLicense } from "./endpoints/activateLicense";
 import { checkLicense } from "./endpoints/checkLicense";

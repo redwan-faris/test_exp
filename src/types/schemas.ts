@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { ActivationTypes } from '../utils/activation_types';
 
 // Base Types
 export const BaseResponseSchema = z.object({
@@ -48,7 +49,7 @@ export const LicenseSchema = z.object({
   projectId: z.string(),
   expiresAt: z.string(),
   createdById: z.string().nullable(),
-  type: z.union([z.literal("TEST"), z.string()]),
+  type: z.nativeEnum(ActivationTypes),
   addressId: z.string(),
   allowedLoginAttempt: z.number(),
   createdAt: z.string(),
@@ -76,8 +77,9 @@ export const LoginSchema = z.object({
 export const TokenResponseSchema = z.object({
   token: z.string(),
   license: LicenseSchema,
-  login: LoginSchema
+  login: LoginSchema.optional()
 });
+
 
 export const LicenseResponseSchema = z.object({
   license: LicenseSchema,
