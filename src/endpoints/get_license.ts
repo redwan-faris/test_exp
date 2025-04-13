@@ -30,4 +30,14 @@ const getLicenseHandler = async (c: any) => {
 
 const handlers = getConfig().factory.createHandlers(getLicenseHandler);
 export const getLicense = handlers[0];
+
+export const getLicenseWithCallback = (c: any) => {
+  const customHook = getConfig().callbacks?.onGetLicense;
+
+  if (customHook) {
+    return customHook(getLicense)(c);
+  }
+
+  return getLicense(c);
+};
  

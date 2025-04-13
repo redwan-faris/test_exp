@@ -1,10 +1,9 @@
- 
-
 import { activateLicense } from "./endpoints/activateLicense";
 import { checkLicense } from "./endpoints/checkLicense";
 import { createLicense } from "./endpoints/createLicense";
 import { deactivateLicense } from "./endpoints/deactivateLicense";
 import { verifyNumber } from "./endpoints/verify_number";
+import { getLicense } from "./endpoints/get_license";
 import { ErrorResponse } from "./types/schemas";
 import { testPackage } from "./utils/testPackage";
 import { generateLicenseToken } from "./utils/token";
@@ -36,9 +35,8 @@ interface PackageConfig {
     onDeactivateLicense?: (originalFunction: typeof deactivateLicense) => typeof deactivateLicense;
     onActivateLicense?: (originalFunction: typeof activateLicense) => typeof activateLicense;
     onVerifyNumber?: (originalFunction: typeof verifyNumber) => typeof verifyNumber;
+    onGetLicense?: (originalFunction: typeof getLicense) => typeof getLicense;
     testPackage?: (originalFunction: typeof testPackage) => typeof testPackage;
-
-
   };
   validators?: {
     clientActivateLicenseZodSchema?: any,

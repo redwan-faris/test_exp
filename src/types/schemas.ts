@@ -168,6 +168,7 @@ export const PackageConfigSchema = z.object({
     onDeactivateLicense: z.function().optional(),
     onActivateLicense: z.function().optional(),
     onVerifyNumber: z.function().optional(),
+    onGetLicense: z.function().optional(),
     testPackage: z.function().optional()
   }).optional(),
   validators: z.object({
