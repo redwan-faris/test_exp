@@ -49,7 +49,7 @@ export const LicenseSchema = z.object({
   projectId: z.string(),
   expiresAt: z.string(),
   createdById: z.string().nullable(),
-  type: z.nativeEnum(ActivationTypes),
+  type: z.union([z.literal("TEST"), z.string()]),
   addressId: z.string(),
   allowedLoginAttempt: z.number(),
   createdAt: z.string(),
@@ -79,7 +79,6 @@ export const TokenResponseSchema = z.object({
   license: LicenseSchema,
   login: LoginSchema.optional()
 });
-
 
 export const LicenseResponseSchema = z.object({
   license: LicenseSchema,
@@ -190,4 +189,28 @@ export const LicenseHeadersSchema = z.object({
   device: z.string().optional(),
   version: z.string().optional(),
   authorization: z.string().optional()
-}); 
+});
+
+// Also export the inferred types
+export type CheckLicenseRequest = z.infer<typeof CheckLicenseRequestSchema>;
+export type License = z.infer<typeof LicenseSchema>;
+export type LicenseResponse = z.infer<typeof LicenseResponseSchema>;
+export type TokenResponse = z.infer<typeof TokenResponseSchema>;
+export type VerifyNumberRequest = z.infer<typeof VerifyNumberRequestSchema>;
+export type VerifyNumberResponse = z.infer<typeof VerifyNumberResponseSchema>;
+export type ErrorResponse = z.infer<typeof ErrorResponseSchema>;
+export type LicenseMiddlewareOptions = z.infer<typeof LicenseMiddlewareOptionsSchema>;
+
+// Additional type exports
+export type BaseResponse = z.infer<typeof BaseResponseSchema>;
+export type City = z.infer<typeof CitySchema>;
+export type Region = z.infer<typeof RegionSchema>;
+export type Address = z.infer<typeof AddressSchema>;
+export type Customer = z.infer<typeof CustomerSchema>;
+export type Login = z.infer<typeof LoginSchema>;
+export type ActivateLicenseRequest = z.infer<typeof ActivateLicenseRequestSchema>;
+export type DeactivateLicenseRequest = z.infer<typeof DeactivateLicenseRequestSchema>;
+export type LicenseTokenPayload = z.infer<typeof LicenseTokenPayloadSchema>;
+export type PackageConfig = z.infer<typeof PackageConfigSchema>;
+export type LicenseHeaders = z.infer<typeof LicenseHeadersSchema>;
+export type ApiResponse<T extends z.ZodType> = z.infer<ReturnType<typeof ApiResponseSchema<T>>>; 

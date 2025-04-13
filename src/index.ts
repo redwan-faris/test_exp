@@ -1,23 +1,22 @@
-import { 
-  License, 
-  LicenseResponse, 
-  ActivateLicenseRequest, 
-  DeactivateLicenseRequest, 
-  CheckLicenseRequest, 
-  VerifyNumberRequest, 
-  VerifyNumberResponse, 
-  LicenseMiddlewareOptions, 
-  ErrorResponse 
-} from './types/general_types';
+ 
 
 import { activateLicense } from "./endpoints/activateLicense";
 import { checkLicense } from "./endpoints/checkLicense";
 import { createLicense } from "./endpoints/createLicense";
 import { deactivateLicense } from "./endpoints/deactivateLicense";
 import { verifyNumber } from "./endpoints/verify_number";
+import { ErrorResponse } from "./types/schemas";
 import { testPackage } from "./utils/testPackage";
 import { generateLicenseToken } from "./utils/token";
-
+import {
+  License,
+  LicenseResponse,
+  ActivateLicenseRequest,
+  DeactivateLicenseRequest,
+  CheckLicenseRequest,
+  VerifyNumberRequest,
+  VerifyNumberResponse,
+} from './types/schemas'
 interface PackageConfig {
   factory: any;
   urls?:{
@@ -110,7 +109,7 @@ export const licenseMiddleware = new Proxy(function() {}, {
     return _routes.licenseMiddleware[prop];
   }
 });
-
+ 
 export {
   License,
   LicenseResponse,
@@ -119,7 +118,6 @@ export {
   CheckLicenseRequest,
   VerifyNumberRequest,
   VerifyNumberResponse,
-  LicenseMiddlewareOptions,
+  ErrorResponse,
   PackageConfig,
-  ErrorResponse
-};
+}
