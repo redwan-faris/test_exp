@@ -8,15 +8,7 @@ import { verifyNumber } from "./endpoints/verify_number";
 import { ErrorResponse } from "./types/schemas";
 import { testPackage } from "./utils/testPackage";
 import { generateLicenseToken } from "./utils/token";
-import {
-  License,
-  LicenseResponse,
-  ActivateLicenseRequest,
-  DeactivateLicenseRequest,
-  CheckLicenseRequest,
-  VerifyNumberRequest,
-  VerifyNumberResponse,
-} from './types/schemas'
+ 
 interface PackageConfig {
   factory: any;
   urls?:{
@@ -109,15 +101,4 @@ export const licenseMiddleware = new Proxy(function() {}, {
     return _routes.licenseMiddleware[prop];
   }
 });
- 
-export {
-  License,
-  LicenseResponse,
-  ActivateLicenseRequest,
-  DeactivateLicenseRequest,
-  CheckLicenseRequest,
-  VerifyNumberRequest,
-  VerifyNumberResponse,
-  ErrorResponse,
-  PackageConfig,
-}
+  
