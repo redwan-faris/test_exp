@@ -28,14 +28,15 @@ const activateLicenseHandler = async (c: any) => {
   }
 };
 
-export const activateLicense = getConfig().factory.createHandlers(activateLicenseHandler);
+const handlers = getConfig().factory.createHandlers(activateLicenseHandler);
+export const activateLicense = handlers[0];
 
 export const activateLicenseWithCallback = (c: any) => {
   const customHook = getConfig().callbacks?.onActivateLicense;
 
   if (customHook) {
-    return customHook(activateLicense[0])(c);
+    return customHook(activateLicense)(c);
   }
 
-  return activateLicense[0](c);
+  return activateLicense(c);
 };

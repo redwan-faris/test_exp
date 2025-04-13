@@ -28,14 +28,15 @@ const checkLicenseHandler = async (c: any) => {
   }
 };
 
-export const checkLicense = getConfig().factory.createHandlers(checkLicenseHandler);
+const handlers = getConfig().factory.createHandlers(checkLicenseHandler);
+export const checkLicense = handlers[0];
 
 export const checkLicenseWithCallback = (c: any) => {
   const customHook = getConfig().callbacks?.onCheckLicense;
 
   if (customHook) {
-    return customHook(checkLicense[0])(c);
+    return customHook(checkLicense)(c);
   }
 
-  return checkLicense[0](c);
+  return checkLicense(c);
 };

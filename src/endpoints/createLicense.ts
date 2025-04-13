@@ -49,7 +49,6 @@ const createLicenseHandler = async (c: any) => {
     return c.json({licenseKey:response.data.id}, 200);
 
   } catch (error: any) {
-    console.log(error)
     if (error.response?.data) {
       return c.json(error.response.data, error.response.status || 500);
     }
@@ -57,14 +56,15 @@ const createLicenseHandler = async (c: any) => {
   }
 };
 
-export const createLicense = getConfig().factory.createHandlers(createLicenseHandler);
+const handlers = getConfig().factory.createHandlers(createLicenseHandler);
+export const createLicense = handlers[0];
 
 export const createLicenseWithCallback = (c: any) => {
   const customHook = getConfig().callbacks?.onCreateLicense;
 
   if (customHook) {
-    return customHook(createLicense[0])(c);
+    return customHook(createLicense)(c);
   }
 
-  return createLicense[0](c);
+  return createLicense(c);
 };

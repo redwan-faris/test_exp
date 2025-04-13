@@ -28,5 +28,6 @@ const getLicenseHandler = async (c: any) => {
   }
 };
 
-export const getLicense = getConfig().factory.createHandlers(getLicenseHandler);
+const handlers = getConfig().factory.createHandlers(getLicenseHandler);
+export const getLicense = handlers[0];
  

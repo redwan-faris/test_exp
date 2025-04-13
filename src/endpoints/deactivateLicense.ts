@@ -27,14 +27,15 @@ const deactivateLicenseHandler = async (c: any) => {
   }
 };
 
-export const deactivateLicense = getConfig().factory.createHandlers(deactivateLicenseHandler);
+const handlers = getConfig().factory.createHandlers(deactivateLicenseHandler);
+export const deactivateLicense = handlers[0];
 
 export const deactivateLicenseWithCallback = (c: any) => {
   const customHook = getConfig().callbacks?.onDeactivateLicense;
   
   if (customHook) {
-    return customHook(deactivateLicense[0])(c);
+    return customHook(deactivateLicense)(c);
   }
 
-  return deactivateLicense[0](c);
+  return deactivateLicense(c);
 };
