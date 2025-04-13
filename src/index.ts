@@ -30,6 +30,7 @@ interface PackageConfig {
   callbacks?: {
     onrGenerateLicenseToken?: (originalFunction: typeof generateLicenseToken) => typeof generateLicenseToken;
     onCheckLicense?: (originalFunction: typeof checkLicense) => typeof checkLicense;
+    onLicenseMiddleware?: (originalFunction: typeof LicenseMiddleware) => typeof LicenseMiddleware,
     onCreateLicense?: (originalFunction: typeof createLicense) => typeof createLicense;
     onDeactivateLicense?: (originalFunction: typeof deactivateLicense) => typeof deactivateLicense;
     onActivateLicense?: (originalFunction: typeof activateLicense) => typeof activateLicense;
@@ -52,11 +53,11 @@ export function init(config: PackageConfig): void {
     globalConfig = config;
     const {  exRoutes } = require("./endpoints");
     const { LicenseMiddleware } = require("./middlewares/license_middleware/license_middleware");
-    _routes = { 
+        _routes = { 
        
       exRoutes,
-      LicenseMiddleware
-    };
+      LicenseMiddleware,
+        };
   } else {
     throw new Error("Invalid configuration provided");
   }
@@ -85,11 +86,10 @@ export const exRoutes = new Proxy({}, {
 });
 
 export const licenseMiddleware = new Proxy(function() {}, {
-  get: function (target, prop) {
+  apply: function(target, thisArg, args) {
     if (!globalConfig) {
       throw new Error("Config not set. Please call init() first.");
     }
-    return _routes.licenseMiddleware[prop];
+    return _routes.LicenseMiddleware.apply(thisArg, args);
   }
 });
-  
