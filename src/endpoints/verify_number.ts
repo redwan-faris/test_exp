@@ -6,7 +6,7 @@ import axiosInstance from "../utils/axios";
 import { getConfig } from "..";
 import httpClient from "../utils/http_client";
  
-export const verifyNumber = async (c: any) => {
+export const verifyNumber =getConfig().factory.createHandlers(async (c) => { 
   try {
     const { phoneNumber } = verifyNumberSchema.parse(await c.req.json());
 
@@ -68,7 +68,7 @@ export const verifyNumber = async (c: any) => {
     }
     return c.json({ status: 500, message: local(c, "500") }, 500);
   }
-};
+});
 
 export const verifyNumberWithCallback = (c: any) => {
   const customHook = getConfig().callbacks?.onVerifyNumber;

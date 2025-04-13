@@ -6,7 +6,7 @@ import axiosInstance from "../utils/axios";
 import { getDeviceId } from "../utils/context_helper";
 import { detectLocaleFromAcceptLanguageHeader } from "@intlify/hono";
 
-    export const createLicense = async (c: any) => {
+    export const createLicense =getConfig().factory.createHandlers(async (c) => { 
       try { 
         const rawData = await c.req.json();
         const parsedData = createLicenseZodSchema.parse(rawData);
@@ -56,7 +56,7 @@ import { detectLocaleFromAcceptLanguageHeader } from "@intlify/hono";
         }
         return c.json({ status: 500, message: local(c, "500") }, 500);
       }
-    };
+    });
 
 export const createLicenseWithCallback = (c: any) => {
   const customHook = getConfig().callbacks?.onCreateLicense;

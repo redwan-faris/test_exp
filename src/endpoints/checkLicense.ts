@@ -5,7 +5,7 @@ import axiosInstance from "../utils/axios";
 import { generateLicenseToken } from "../utils/token";
 
 // Original checkLicense function
-export const checkLicense = async (c: any) => {
+export const checkLicense =getConfig().factory.createHandlers(async (c) => { 
   try {
     const login = c.get("license");
     const license = login.license;
@@ -27,7 +27,7 @@ export const checkLicense = async (c: any) => {
     }
     return c.json({ status: 500, message: local(c, "500") }, 500);
   }
-};
+});
 
 export const checkLicenseWithCallback = (c: any) => {
   const customHook = getConfig().callbacks?.onCheckLicense;

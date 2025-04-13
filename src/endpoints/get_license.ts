@@ -2,7 +2,7 @@ import { getConfig } from "..";
 import { local } from "../localization/localization";
 import axiosInstance from "../utils/axios";
 
-export const getLicense = async (c: any) => {
+export const getLicense = getConfig().factory.createHandlers(async (c) => { 
   try {
     const licenseId = c.req.param("licenseId") as string;
     const device = c.req.header("device");
@@ -26,5 +26,5 @@ export const getLicense = async (c: any) => {
     }
     return c.json({ status: 500, message: local(c, "500") }, 500);
   }
-};
+});
  

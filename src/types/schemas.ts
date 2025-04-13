@@ -49,7 +49,7 @@ export const LicenseSchema = z.object({
   projectId: z.string(),
   expiresAt: z.string(),
   createdById: z.string().nullable(),
-  type: z.union([z.literal("TEST"), z.string()]),
+  type: z.nativeEnum(ActivationTypes),
   addressId: z.string(),
   allowedLoginAttempt: z.number(),
   createdAt: z.string(),

@@ -5,7 +5,7 @@ import { generateLicenseToken } from "../utils/token";
 import { getConfig } from './../index'
 import { LicenseSchema, LoginSchema, TokenResponseSchema } from "../types/schemas";
 
-export const activateLicense = async (c: any) => {
+export const activateLicense = getConfig().factory.createHandlers(async (c) => { 
   try {
     const device_id = c.req.header("device");
     const version = c.req.header("version");
@@ -26,7 +26,7 @@ export const activateLicense = async (c: any) => {
     }
     return c.json({ status: 500, message: local(c, "500") }, 500);
   }
-};
+});
 
 export const activateLicenseWithCallback = (c: any) => {
   const customHook = getConfig().callbacks?.onActivateLicense;
