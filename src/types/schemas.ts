@@ -1,0 +1,191 @@
+import { z } from 'zod';
+
+// Base Types
+export const BaseResponseSchema = z.object({
+  status: z.number(),
+  message: z.string()
+});
+
+// License Types
+export const CitySchema = z.object({
+  id: z.number(),
+  name: z.string()
+});
+
+export const RegionSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  cityId: z.number(),
+  city: CitySchema
+});
+
+export const AddressSchema = z.object({
+  id: z.string(),
+  nearestLandmark: z.string(),
+  regionId: z.number(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+  customerId: z.string().nullable(),
+  region: RegionSchema
+});
+
+export const CustomerSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  phoneNumber: z.string(),
+  secondaryPhoneNumber: z.string().nullable(),
+  notes: z.string().nullable(),
+  referredById: z.string().nullable(),
+  createdAt: z.string(),
+  updatedAt: z.string()
+});
+
+export const LicenseSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  isActive: z.boolean(),
+  customerId: z.number(),
+  projectId: z.string(),
+  expiresAt: z.string(),
+  createdById: z.string().nullable(),
+  type: z.union([z.literal("TEST"), z.string()]),
+  addressId: z.string(),
+  allowedLoginAttempt: z.number(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+  customer: CustomerSchema,
+  address: AddressSchema,
+  province: z.string()
+});
+
+export const LoginSchema = z.object({
+  id: z.string(),
+  deviceId: z.string(),
+  version: z.string(),
+  deviceType: z.string().nullable(),
+  isActive: z.boolean(),
+  logInAt: z.string(),
+  logOutAt: z.string().nullable(),
+  licenseId: z.string(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+  license: LicenseSchema
+});
+
+// Response Types
+export const TokenResponseSchema = z.object({
+  token: z.string(),
+  license: LicenseSchema,
+  login: LoginSchema
+});
+
+export const LicenseResponseSchema = z.object({
+  license: LicenseSchema,
+  token: z.string()
+});
+
+// Request Types
+export const ActivateLicenseRequestSchema = z.object({
+  key: z.string(),
+  deviceId: z.string().optional(),
+  version: z.string().optional()
+});
+
+export const DeactivateLicenseRequestSchema = z.object({
+  licenseId: z.string(),
+  deviceId: z.string().optional()
+});
+
+export const CheckLicenseRequestSchema = z.object({
+  licenseId: z.string(),
+  deviceId: z.string().optional()
+});
+
+// OTP Types
+export const VerifyNumberRequestSchema = z.object({
+  number: z.string(),
+  code: z.string().optional()
+});
+
+export const VerifyNumberResponseSchema = BaseResponseSchema.extend({
+  data: z.object({
+    code: z.string().optional(),
+    verified: z.boolean().optional()
+  }).optional()
+});
+
+// Middleware Types
+export const LicenseMiddlewareOptionsSchema = z.object({
+  requireDeviceId: z.boolean().optional(),
+  requireVersion: z.boolean().optional()
+});
+
+// Token Types
+export const LicenseTokenPayloadSchema = z.object({
+  licenseId: z.string(),
+  type: z.string(),
+  deviceId: z.string(),
+  version: z.string().optional(),
+  iat: z.number().optional(),
+  exp: z.number().optional()
+});
+
+// Error Types
+export const ErrorResponseSchema = BaseResponseSchema.extend({
+  error: z.object({
+    code: z.string().optional(),
+    details: z.string().optional(),
+    stack: z.string().optional()
+  }).optional()
+});
+
+// Configuration Types
+export const PackageConfigSchema = z.object({
+  factory: z.any(),
+  urls: z.object({
+    activateLicense: z.string(),
+    checkLicense: z.string(),
+    createLicense: z.string(),
+    deactivateLicense: z.string(),
+    verifyNumber: z.string()
+  }).optional(),
+  env: z.object({
+    OTP_BASE_URL: z.string(),
+    OTP_KEY: z.string(),
+    API_KEY: z.string(),
+    jwtSecret: z.string(),
+    QI_API_USER: z.string(),
+    QI_API_PASS: z.string(),
+    QI_TERMINAL_ID: z.string(),
+    API_BASE_URL: z.string()
+  }),
+  callbacks: z.object({
+    onrGenerateLicenseToken: z.function().optional(),
+    onLicenseMiddleware: z.function().optional(),
+    onCheckLicense: z.function().optional(),
+    onCreateLicense: z.function().optional(),
+    onDeactivateLicense: z.function().optional(),
+    onActivateLicense: z.function().optional(),
+    onVerifyNumber: z.function().optional(),
+    testPackage: z.function().optional()
+  }).optional(),
+  validators: z.object({
+    clientActivateLicenseZodSchema: z.any().optional(),
+    clientCreateLicenseZodSchema: z.any().optional(),
+    clientVerifyNumberZodSchema: z.any().optional()
+  }).optional()
+});
+
+// API Response Types
+export const ApiResponseSchema = <T extends z.ZodType>(dataSchema: T) => z.object({
+  status: z.number(),
+  data: dataSchema,
+  message: z.string().optional()
+});
+
+// Headers Types
+export const LicenseHeadersSchema = z.object({
+  device: z.string().optional(),
+  version: z.string().optional(),
+  authorization: z.string().optional()
+}); 
