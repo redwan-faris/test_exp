@@ -15,7 +15,6 @@ import { checkLicense } from "./endpoints/checkLicense";
 import { createLicense } from "./endpoints/createLicense";
 import { deactivateLicense } from "./endpoints/deactivateLicense";
 import { verifyNumber } from "./endpoints/verify_number";
-import { createLicenseMiddleware } from "./middlewares/license_middleware/license_middleware";
 import { testPackage } from "./utils/testPackage";
 import { generateLicenseToken } from "./utils/token";
 
@@ -67,7 +66,7 @@ export function init(config: PackageConfig): void {
     _routes = { 
       exRoutesWithoutLogin, 
       exRoutesWithLogin,
-      licenseMiddleware: createLicenseMiddleware()
+      licenseMiddleware: licenseMiddleware()
     };
   } else {
     throw new Error("Invalid configuration provided");
