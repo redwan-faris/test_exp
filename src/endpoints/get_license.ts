@@ -21,7 +21,6 @@ const getLicenseHandler = async (c: any) => {
       200
     );
   } catch (error: any) {
-    console.log(error)
     if (error.response?.data) {
       return c.json(error.response.data, error.response.status || 500);
     }

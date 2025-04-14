@@ -4,29 +4,39 @@ import { local } from "../localization/localization";
 import { generateLicenseToken } from "../utils/token";
 import { getConfig } from './../index'
 import { LicenseSchema, LoginSchema, TokenResponseSchema } from "../types/schemas";
-
-const activateLicenseHandler = async (c: any) => { 
+import { Context } from "hono";
+import { ActivateLicenseResponse, ActivateLicenseHandlerResponse } from "../types/types";
+ 
+const activateLicenseHandler = async (c: Context): Promise<ActivateLicenseHandlerResponse> => { 
   try {
-    const device_id = c.req.header("device");
-    const version = c.req.header("version");
+    const device_id = c.req.header("device") as string;
+    const version = c.req.header("version") as string;
     const data = activateLicenseZodSchema.parse(await c.req.json());
-    data['deviceId'] = device_id;
-    data['version'] = version;
-    data['licenseId'] = data.key;
+    data['deviceId'] = device_id as string;
+    data['version'] = version as string;
+    data['licenseId'] = data.key as string;
     delete data.key;
     const response = await axiosInstance.post('/licenses/project/activate', data);
     const license = LicenseSchema.parse(response.data.license);
     const login = LoginSchema.parse(response.data);
     
     const token = generateLicenseToken(license, license.type, device_id, undefined,login.deviceId);
-    const tokenResponse = TokenResponseSchema.parse({token, license ,login});
-    
-    return c.json(tokenResponse, 200);
+    const tokenResponse: ActivateLicenseResponse = TokenResponseSchema.parse({token, license ,login});
+    return {
+      data: tokenResponse,
+      status: 200
+    };
   } catch (error: any) {
     if (error.response?.data) {
-      return c.json(error.response.data, error.response.status || 500);
+      return {
+        data: error.response.data,
+        status: error.response.status || 500
+      };
     }
-    return c.json({ status: 500, message: local(c, "500") }, 500);
+    return {
+      data: { status: 500, message: local(c, "500") },
+      status: 500
+    };
   }
 };
 

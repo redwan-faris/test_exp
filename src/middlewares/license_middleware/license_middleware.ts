@@ -6,7 +6,7 @@ import { getConfig } from "../../index";
 
 export const LicenseMiddleware = getConfig().factory.createMiddleware(async (c, next) => {
   const originalFunction = async (c: any, next: any) => {
-    try {
+    try { 
       const version: string = c.req.header("version")!;
       const deviceId: string = c.req.header("device")!;
       const token = c.req.header("authorization")?.split(" ")[1]!;
@@ -27,12 +27,12 @@ export const LicenseMiddleware = getConfig().factory.createMiddleware(async (c, 
         );
       }
 
-      c.set("license", response.data);
+      c.set("license", response.data.license);
+      c.set("login", response.data);
       c.set("device", deviceId);
       c.set("version", version);
       return next();
     } catch (error) {
-      console.log(error)
       return c.json(
         {
           status: 401,

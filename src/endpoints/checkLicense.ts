@@ -1,39 +1,53 @@
-import { getConfig } from "..";
-import { local } from "../localization/localization";
-import { TokenResponseSchema } from "../types/schemas";
+import { detectLocaleFromAcceptLanguageHeader } from "@intlify/hono";
 import axiosInstance from "../utils/axios";
-import { generateLicenseToken } from "../utils/token";
+import { local } from "../localization/localization";
+import { getConfig } from "..";
+import { Context } from "hono";
+import { CheckLicenseHandlerResponse, CheckLicenseResponse } from "../types/types";
 
-const checkLicenseHandler = async (c: any) => { 
+const checkLicenseHandler = async (c: Context): Promise<CheckLicenseHandlerResponse> => { 
   try {
-    const login = c.get("license");
-    const license = login.license;
-    const { garage, deviceId: device, ...rest } = license;
-    const response = await axiosInstance.get(`licenses/project/check/${license.id}`, {
+    const device_id = c.req.header("device");
+    const license = c.get('license');
+    const response = await axiosInstance.get(`/licenses/project/${license.id}`, {
       headers: {
-        'device': device
+        'device': device_id
       }
     });
-    const token = generateLicenseToken(license, license.type, response.data.deviceId, undefined,response.data.deviceId);
-    const tokenResponse = TokenResponseSchema.parse({token, license ,login});
-    return c.json(
-      tokenResponse,
-      200
-    );
+    const successResponse: CheckLicenseResponse = {
+      token: response.data.data.token,
+      license: response.data.data.license,
+      login: response.data.data.login
+    };
+    return {
+      data: successResponse,
+      status: 200
+    };
   } catch (error: any) {
     if (error.response?.data) {
-      return c.json(error.response.data, error.response.status || 500);
+      return {
+        data: error.response.data,
+        status: error.response.status || 500
+      };
     }
-    return c.json({ status: 500, message: local(c, "500") }, 500);
+    return {
+      data: { status: 500, message: local(c, "500") },
+      status: 500
+    };
   }
 };
 
-const handlers = getConfig().factory.createHandlers(checkLicenseHandler);
+const handlers = getConfig().factory.createHandlers((c: Context) => {
+  return checkLicenseHandler(c).then(response => {
+    return c.json(response.data, { status: response.status as 200 | 400 | 401 | 403 | 404 | 500 });
+  });
+});
+
 export const checkLicense = handlers[0];
 
 export const checkLicenseWithCallback = (c: any) => {
   const customHook = getConfig().callbacks?.onCheckLicense;
-
+  
   if (customHook) {
     return customHook(checkLicense)(c);
   }

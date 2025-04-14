@@ -36,8 +36,7 @@ const verifyNumberHandler = async (c: any) => {
           },
         }
       );
-      console.log(res.data)
-
+console.log(res)
       return c.json(
         {
           status: 200,

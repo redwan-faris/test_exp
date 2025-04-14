@@ -2,8 +2,10 @@ import { detectLocaleFromAcceptLanguageHeader } from "@intlify/hono";
 import axiosInstance from "../utils/axios";
 import { local } from "../localization/localization";
 import { getConfig } from "..";
+import { Context } from "hono";
+import { DeactivateLicenseHandlerResponse, DeactivateLicenseResponse } from "../types/types";
 
-const deactivateLicenseHandler = async (c: any) => { 
+const deactivateLicenseHandler = async (c: Context): Promise<DeactivateLicenseHandlerResponse> => { 
   try {
     const device_id = c.req.header("device");
     const license = c.get('license');
@@ -12,22 +14,34 @@ const deactivateLicenseHandler = async (c: any) => {
         'device': device_id
       }
     });
-    return c.json(
-      {
-        status: 200,
-        message: local(c, "licenseDeactivated"),
-      },
-      200
-    );
-    } catch (error: any) {
+    const successResponse: DeactivateLicenseResponse = {
+      status: 200,
+      message: local(c, "licenseDeactivated"),
+    };
+    return {
+      data: successResponse,
+      status: 200
+    };
+  } catch (error: any) {
     if (error.response?.data) {
-      return c.json(error.response.data, error.response.status || 500);
+      return {
+        data: error.response.data,
+        status: error.response.status || 500
+      };
     }
-    return c.json({ status: 500, message: local(c, "500") }, 500);
+    return {
+      data: { status: 500, message: local(c, "500") },
+      status: 500
+    };
   }
 };
 
-const handlers = getConfig().factory.createHandlers(deactivateLicenseHandler);
+const handlers = getConfig().factory.createHandlers((c: Context) => {
+  return deactivateLicenseHandler(c).then(response => {
+    return c.json(response.data, { status: response.status as 200 | 400 | 401 | 403 | 404 | 500 });
+  });
+});
+
 export const deactivateLicense = handlers[0];
 
 export const deactivateLicenseWithCallback = (c: any) => {

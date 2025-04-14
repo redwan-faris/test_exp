@@ -5,8 +5,10 @@ import { local } from "../localization/localization";
 import axiosInstance from "../utils/axios";
 import { getDeviceId } from "../utils/context_helper";
 import { detectLocaleFromAcceptLanguageHeader } from "@intlify/hono";
+import { Context } from "hono";
+import { CreateLicenseHandlerResponse, CreateLicenseResponse } from "../types/types";
 
-const createLicenseHandler = async (c: any) => { 
+const createLicenseHandler = async (c: Context): Promise<CreateLicenseHandlerResponse> => { 
   try { 
     const rawData = await c.req.json();
     const parsedData = createLicenseZodSchema.parse(rawData);
@@ -45,18 +47,33 @@ const createLicenseHandler = async (c: any) => {
     };
 
     const response = await axiosInstance.post('/licenses/project', transformedData);
+    const successResponse: CreateLicenseResponse = { licenseKey: response.data.id };
 
-    return c.json({licenseKey:response.data.id}, 200);
+    return {
+      data: successResponse,
+      status: 200
+    };
 
   } catch (error: any) {
     if (error.response?.data) {
-      return c.json(error.response.data, error.response.status || 500);
+      return {
+        data: error.response.data,
+        status: error.response.status || 500
+      };
     }
-    return c.json({ status: 500, message: local(c, "500") }, 500);
+    return {
+      data: { status: 500, message: local(c, "500") },
+      status: 500
+    };
   }
 };
 
-const handlers = getConfig().factory.createHandlers(createLicenseHandler);
+const handlers = getConfig().factory.createHandlers((c: Context) => {
+  return createLicenseHandler(c).then(response => {
+    return c.json(response.data, { status: response.status as 200 | 400 | 401 | 403 | 404 | 500 });
+  });
+});
+
 export const createLicense = handlers[0];
 
 export const createLicenseWithCallback = (c: any) => {
