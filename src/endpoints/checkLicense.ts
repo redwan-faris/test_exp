@@ -1,29 +1,33 @@
-import { detectLocaleFromAcceptLanguageHeader } from "@intlify/hono";
-import axiosInstance from "../utils/axios";
-import { local } from "../localization/localization";
-import { getConfig } from "..";
 import { Context } from "hono";
-import { CheckLicenseHandlerResponse, CheckLicenseResponse } from "../types/types";
+import { getConfig } from "..";
+import { local } from "../localization/localization";
+import { TokenResponseSchema } from "../types/schemas";
+import axiosInstance from "../utils/axios";
+import { generateLicenseToken } from "../utils/token";
+import { CheckLicenseHandlerResponse } from "../types/types";
 
-const checkLicenseHandler = async (c: Context): Promise<CheckLicenseHandlerResponse> => { 
+const checkLicenseHandler =async (c: Context): Promise<CheckLicenseHandlerResponse> => {
   try {
-    const device_id = c.req.header("device");
-    const license = c.get('license');
-    const response = await axiosInstance.get(`/licenses/project/${license.id}`, {
+    const login = c.get("login");
+    const license = c.get("license");
+    const { garage, deviceId: device, ...rest } = license;
+    const response = await axiosInstance.get(`licenses/project/check/${license.id}`, {
       headers: {
-        'device': device_id
+        'device': device
       }
     });
-    const successResponse: CheckLicenseResponse = {
-      token: response.data.data.token,
-      license: response.data.data.license,
-      login: response.data.data.login
-    };
+    const token = generateLicenseToken(license, license.type, response.data.deviceId, undefined,response.data.deviceId);
+    console.log(token)
+    console.log(license)
+    console.log(login)
+    const tokenResponse = TokenResponseSchema.parse({token, license ,login});
+
     return {
-      data: successResponse,
+      data: tokenResponse,
       status: 200
-    };
+    }
   } catch (error: any) {
+    console.log(error)
     if (error.response?.data) {
       return {
         data: error.response.data,
@@ -37,17 +41,12 @@ const checkLicenseHandler = async (c: Context): Promise<CheckLicenseHandlerRespo
   }
 };
 
-const handlers = getConfig().factory.createHandlers((c: Context) => {
-  return checkLicenseHandler(c).then(response => {
-    return c.json(response.data, { status: response.status as 200 | 400 | 401 | 403 | 404 | 500 });
-  });
-});
-
+const handlers = getConfig().factory.createHandlers(checkLicenseHandler);
 export const checkLicense = handlers[0];
 
 export const checkLicenseWithCallback = (c: any) => {
   const customHook = getConfig().callbacks?.onCheckLicense;
-  
+
   if (customHook) {
     return customHook(checkLicense)(c);
   }
