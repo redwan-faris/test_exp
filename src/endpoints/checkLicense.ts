@@ -4,9 +4,9 @@ import { local } from "../localization/localization";
 import { TokenResponseSchema } from "../types/schemas";
 import axiosInstance from "../utils/axios";
 import { generateLicenseToken } from "../utils/token";
-import { CheckLicenseHandlerResponse } from "../types/types";
+import { verifyLicenseHandlerResponse } from "../types/types";
 
-const checkLicenseHandler =async (c: Context): Promise<CheckLicenseHandlerResponse> => {
+const verifyLicenseHandler =async (c: Context): Promise<verifyLicenseHandlerResponse> => {
   try {
     const login = c.get("login");
     const license = c.get("license");
@@ -41,15 +41,15 @@ const checkLicenseHandler =async (c: Context): Promise<CheckLicenseHandlerRespon
   }
 };
 
-const handlers = getConfig().factory.createHandlers(checkLicenseHandler);
-export const checkLicense = handlers[0];
+const handlers = getConfig().factory.createHandlers(verifyLicenseHandler);
+export const verifyLicense = handlers[0];
 
-export const checkLicenseWithCallback = (c: any) => {
-  const customHook = getConfig().callbacks?.onCheckLicense;
+export const verifyLicenseWithCallback = (c: any) => {
+  const customHook = getConfig().callbacks?.onverifyLicense;
 
   if (customHook) {
-    return customHook(checkLicense)(c);
+    return customHook(verifyLicense)(c);
   }
 
-  return checkLicense(c);
+  return verifyLicense(c);
 };

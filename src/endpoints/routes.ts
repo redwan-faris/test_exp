@@ -7,7 +7,7 @@ import { verifyNumberValidator } from "@redwan/ex-cp-license/src/ validators/ver
 import { verifyNumberWithCallback } from "@redwan/ex-cp-license/src/endpoints/verify_number";
 import { getConfig } from "@redwan/ex-cp-license/src";
 import { getLicense, getLicenseWithCallback } from "@redwan/ex-cp-license/src/endpoints/get_license";
-import { checkLicenseWithCallback } from "@redwan/ex-cp-license/src/endpoints/checkLicense";
+import { verifyLicenseWithCallback } from "@redwan/ex-cp-license/src/endpoints/verifyLicense";
 import { requestHeaderValidator } from "@redwan/ex-cp-license/src/middlewares/license_middleware/license_middleware_validator";
 import { LicenseMiddleware } from "@redwan/ex-cp-license/src/middlewares/license_middleware/license_middleware";
 import { deactivateLicenseWithCallback } from "@redwan/ex-cp-license/src/endpoints/deactivateLicense";
@@ -27,7 +27,7 @@ exRoutes.post(urls?.activateLicense ? urls?.activateLicense : "/activate", activ
 
 exRoutes.use(requestHeaderValidator,LicenseMiddleware);
 exRoutes.post(urls?.deactivateLicense ? urls?.deactivateLicense : "/deactivate", deactivateLicenseWithCallback);
-exRoutes.post(urls?.checkLicense ? urls?.checkLicense : '/verify', checkLicenseWithCallback);
+exRoutes.post(urls?.verifyLicense ? urls?.verifyLicense : '/verify', verifyLicenseWithCallback);
 
 
  

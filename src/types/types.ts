@@ -21,14 +21,14 @@ export type ActivateLicenseResponse = {
     status: number;
   };
 
-  export type CheckLicenseResponse = {
+  export type verifyLicenseResponse = {
     token: string;
     license: ReturnType<typeof LicenseSchema.parse>;
     login?: ReturnType<typeof LoginSchema.parse>;
   };
 
-  export type CheckLicenseHandlerResponse = {
-    data: CheckLicenseResponse | ErrorResponse;
+  export type verifyLicenseHandlerResponse = {
+    data: verifyLicenseResponse | ErrorResponse;
     status: number;
   };
 

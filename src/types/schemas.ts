@@ -99,7 +99,7 @@ export const DeactivateLicenseRequestSchema = z.object({
   deviceId: z.string().optional()
 });
 
-export const CheckLicenseRequestSchema = z.object({
+export const verifyLicenseRequestSchema = z.object({
   licenseId: z.string(),
   deviceId: z.string().optional()
 });
@@ -147,7 +147,7 @@ export const PackageConfigSchema = z.object({
   factory: z.any(),
   urls: z.object({
     activateLicense: z.string(),
-    checkLicense: z.string(),
+    verifyLicense: z.string(),
     createLicense: z.string(),
     deactivateLicense: z.string(),
     verifyNumber: z.string()
@@ -165,7 +165,7 @@ export const PackageConfigSchema = z.object({
   callbacks: z.object({
     onrGenerateLicenseToken: z.function().optional(),
     onLicenseMiddleware: z.function().optional(),
-    onCheckLicense: z.function().optional(),
+    onverifyLicense: z.function().optional(),
     onCreateLicense: z.function().optional(),
     onDeactivateLicense: z.function().optional(),
     onActivateLicense: z.function().optional(),
@@ -195,7 +195,7 @@ export const LicenseHeadersSchema = z.object({
 });
 
 // Also export the inferred types
-export type CheckLicenseRequest = z.infer<typeof CheckLicenseRequestSchema>;
+export type verifyLicenseRequest = z.infer<typeof verifyLicenseRequestSchema>;
 export type License = z.infer<typeof LicenseSchema>;
 export type LicenseResponse = z.infer<typeof LicenseResponseSchema>;
 export type TokenResponse = z.infer<typeof TokenResponseSchema>;

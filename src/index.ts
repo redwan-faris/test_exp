@@ -1,5 +1,5 @@
 import { activateLicense } from "./endpoints/activateLicense";
-import { checkLicense } from "./endpoints/checkLicense";
+import { verifyLicense } from "./endpoints/verifyLicense";
 import { createLicense } from "./endpoints/createLicense";
 import { deactivateLicense } from "./endpoints/deactivateLicense";
 import { verifyNumber } from "./endpoints/verify_number";
@@ -12,7 +12,7 @@ interface PackageConfig {
   factory: any;
   urls?:{
     activateLicense: string;
-    checkLicense: string;
+    verifyLicense: string;
     createLicense: string;
     deactivateLicense: string;
     verifyNumber: string;
@@ -29,7 +29,7 @@ interface PackageConfig {
   };
   callbacks?: {
     onrGenerateLicenseToken?: (originalFunction: typeof generateLicenseToken) => typeof generateLicenseToken;
-    onCheckLicense?: (originalFunction: typeof checkLicense) => typeof checkLicense;
+    onverifyLicense?: (originalFunction: typeof verifyLicense) => typeof verifyLicense;
     onLicenseMiddleware?: (originalFunction: typeof LicenseMiddleware) => typeof LicenseMiddleware,
     onCreateLicense?: (originalFunction: typeof createLicense) => typeof createLicense;
     onDeactivateLicense?: (originalFunction: typeof deactivateLicense) => typeof deactivateLicense;
