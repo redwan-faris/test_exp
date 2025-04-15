@@ -45,7 +45,7 @@ const handlers = getConfig().factory.createHandlers(verifyLicenseHandler);
 export const verifyLicense = handlers[0];
 
 export const verifyLicenseWithCallback = (c: any) => {
-  const customHook = getConfig().callbacks?.onverifyLicense;
+  const customHook = getConfig().callbacks?.onVerifyLicense;
 
   if (customHook) {
     return customHook(verifyLicense)(c);

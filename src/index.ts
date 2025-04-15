@@ -29,7 +29,7 @@ interface PackageConfig {
   };
   callbacks?: {
     onrGenerateLicenseToken?: (originalFunction: typeof generateLicenseToken) => typeof generateLicenseToken;
-    onverifyLicense?: (originalFunction: typeof verifyLicense) => typeof verifyLicense;
+    onVerifyLicense?: (originalFunction: typeof verifyLicense) => typeof verifyLicense;
     onLicenseMiddleware?: (originalFunction: typeof LicenseMiddleware) => typeof LicenseMiddleware,
     onCreateLicense?: (originalFunction: typeof createLicense) => typeof createLicense;
     onDeactivateLicense?: (originalFunction: typeof deactivateLicense) => typeof deactivateLicense;
