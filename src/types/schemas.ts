@@ -48,6 +48,8 @@ export const LicenseSchema = z.object({
   customerId: z.number(),
   projectId: z.string(),
   expiresAt: z.string(),
+  isBlocked: z.boolean(),
+  enableEPayments: z.boolean(),
   createdById: z.string().nullable(),
   type: z.nativeEnum(ActivationTypes),
   addressId: z.string().optional().nullable(),

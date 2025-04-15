@@ -17,7 +17,7 @@ const urls = getConfig().urls;
 
 
 
-exRoutes.get("/:id", getLicenseWithCallback);
+// exRoutes.get("/:id", getLicenseWithCallback);
 
 exRoutes.post(urls?.verifyNumber ? urls?.verifyNumber : "/create/verify", verifyNumberValidator, verifyNumberWithCallback);
 exRoutes.post(urls?.createLicense ? urls?.createLicense : "/create", createLicenseValidator, createLicenseWithCallback);
