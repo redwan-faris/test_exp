@@ -1,0 +1,25 @@
+export const ar = {
+    unauthorized: "غير مصرح",
+    invalidKey: "رمز غير صالح",
+    keyActivated: "تم تفعيل الترخيص بالفعل",
+    licenseActivatedOnAnotherDevice: "تم تفعيل الترخيص على جهاز آخر",
+    licenseDeactivated: "تم إلغاء تفعيل الترخيص",
+    licenseNotFound:'الترخيص غير موجود',
+    "500": "خطأ داخلي في الخادم",
+    keyExpired: "انتهت صلاحية الترخيص في {date}",
+    licenseBlocked: "الترخيص محظور، يرجى الاتصال بمركز الدعم",
+    deviceHeaderRequired: "مطلوب رأس معرف الجهاز",
+    versionHeaderRequired: "مطلوب رأس الإصدار",
+    carNotFound: "لم يتم العثور على السيارة",
+    incorrectPassword: "كلمة المرور غير صحيحة",
+    successfulOperation: "عملية ناجحة",
+    carAlreadyExists: "السيارة موجودة بالفعل",
+    phoneNumberAlreadyExists: "رقم الهاتف موجود بالفعل",
+    failedToSendOtp: "فشل في إرسال رمز التحقق",
+    successful: "ناجح",
+    403: "ممنوع",
+    409: "تعارض",
+  youHaveMaximumLoginAttempts:"لقد تم تجاوز الحد الاقصى لعدد لتسجيل الدخول",
+
+  };
+  
